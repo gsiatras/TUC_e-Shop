@@ -1,0 +1,19 @@
+{   
+    "hp": "https://gsiatras.github.io/E-shop",
+    "name": "APP",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+      "start": "echo 'Start your project-specific scripts here'",
+      "predeploy": "npm run build",
+      "deploy": "gh-pages -d build",
+      "build": "echo 'Build your project-specific scripts here'",
+      "test": "echo 'Run your project-specific tests here'",
+      "eject": "echo 'Eject your project-specific scripts here'",
+      "initialize": "docker-compose up -d" 
+    },
+    "dependencies": {
+      "docker-compose": "^1.29.2" 
+    }
+  }
+  
