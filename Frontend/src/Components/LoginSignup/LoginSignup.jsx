@@ -299,10 +299,10 @@ export const LoginSignup = () => {
       </div>
       <footer>
         <p>
-          Created with <i className="fa fa-heart"></i> by{' '}
-          <a target="_blank" rel="noopener noreferrer" href="https://florin-pop.com">Florin Pop</a>
-          - Read how I created this and how you can join the challenge{' '}
-          <a target="_blank" rel="noopener noreferrer" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
+          Created <i className="fa fa-heart"></i> by{' '}
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/gsiatras">Georgios Michail Siatras</a>
+          - Full stack e shop project for TUC Cloud Computing class{' '}
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/gsiatras/TUC_e-Shop">here</a>.
         </p>
       </footer>
     </>
