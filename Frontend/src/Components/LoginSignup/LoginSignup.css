@@ -83,7 +83,7 @@ button.ghost {
 form {
 	background-color: #FFFFFF;
 	display: flex;
-	align-items: center;
+	align-items: self-start;
 	justify-content: center;
 	flex-direction: column;
 	padding: 0 50px;
@@ -93,9 +93,12 @@ form {
 
 .checkbox{
     display: flex;
-    padding: 0 30px;
     align-items: center;
     gap: 3px;
+}
+
+.checkbox label {
+    font-size: 14px; 
 }
 
 input {

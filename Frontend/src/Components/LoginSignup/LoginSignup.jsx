@@ -269,8 +269,8 @@ export const LoginSignup = () => {
                     onChange={handleRoleChange}
                 />
                 <label htmlFor="customerCheck">Customer</label>
-          </div>
-          <button onClick={handleLoginSignup}>Sign Up</button>
+            </div>
+            <button onClick={handleLoginSignup}>Sign Up</button>
           </form>
         </div>
         <div className="form-container sign-in-container">

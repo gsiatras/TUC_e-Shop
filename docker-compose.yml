@@ -9,7 +9,7 @@ services:
     build:
       context: ./Frontend
     ports:
-      - "3000:3000"
+      - "3005:3005"
 
   postgres:
     image: postgres
