@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 export default function Nav() {
     const inactiveLink = 'flex gap-1';
-    const activeLink = inactiveLink+' bg-white text-[#FF4B2B] rounded-l-lg';
+    const activeLink = inactiveLink+' bg-white text-blue-900 rounded-l-lg';
     const router = useRouter();
     const {pathname} = router;
     

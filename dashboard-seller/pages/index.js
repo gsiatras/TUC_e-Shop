@@ -7,13 +7,14 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedUsername = localStorage.getItem('username');
+      console.log(localStorage.getItem("username"));  
       setUsername(storedUsername || 'seller1');
     }
   }, []);
 
-  console.log(localStorage);  
+  
   return <Layout>
-    <div className="text-[#FF4B2B] flex justify-between">
+    <div className="text-blue-900 flex justify-between">
       <h2>
         Hello, <b>{username}</b>
       </h2>

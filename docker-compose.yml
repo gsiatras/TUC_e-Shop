@@ -3,6 +3,8 @@ version: '3'
 volumes:
   postgres_data:
     driver: local
+  mongodb_data:
+      driver: local
 
 services:
   frontend:
@@ -10,6 +12,12 @@ services:
       context: ./Frontend
     ports:
       - "3005:3005"
+
+  sellerdash:
+    build:
+      context: ./dashboard-seller
+    ports:
+      - "3006:3006"
 
   postgres:
     image: postgres
@@ -35,3 +43,21 @@ services:
       - 8080:8080
     depends_on:
       - postgres
+
+  productsdb:
+    image: mongo
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+
+  mongodb-compass:
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: productsdb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+    ports:
+      - "8081:8081"
+

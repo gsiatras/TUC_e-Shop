@@ -4,12 +4,6 @@ import useAuth from '../../hooks/useAuth';
 
 import './LoginSignup.css';
 
-import user_icon from '../Assets/person.png';
-import email_icon from '../Assets/email.png';
-import password_icon from '../Assets/password.png';
-
-
-
 export const LoginSignup = () => {
   const { setAuth } = useAuth();
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
@@ -112,6 +106,8 @@ export const LoginSignup = () => {
           localStorage.setItem("username", decodeToken.preferred_username)
           localStorage.setItem("email", decodeToken.email)
           localStorage.setItem("role", decodeToken.realm_access.roles[1])
+
+          console.log(localStorage.getItem("username"))
 
           const uname = decodeToken.preferred_username;
           const mail = decodeToken.email;
