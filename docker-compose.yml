@@ -9,13 +9,7 @@ volumes:
 services:
   frontend:
     build:
-      context: ./Frontend
-    ports:
-      - "3005:3005"
-
-  sellerdash:
-    build:
-      context: ./dashboard-seller
+      context: ./frontend
     ports:
       - "3006:3006"
 
