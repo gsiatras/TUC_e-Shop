@@ -20,6 +20,9 @@ body {
 	margin: -20px 0 50px;
 } */
 
+img{
+  max-height: 100%;
+}
 .input1, textarea{
   @apply border-2 border-gray-300 rounded-md px-1 w-full;
   @apply mb-2;
