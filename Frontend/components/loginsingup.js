@@ -118,8 +118,9 @@ export default function LoginSignup() {
           const uname = decodeToken.preferred_username;
           const mail = decodeToken.email;
           const roles = decodeToken.realm_access.roles;
-          const rl = roles[0] === "Customer" || roles[1] === "Customer" ? "Customer" :
-          roles[0] === "Seller" || roles[1] === "Seller" ? "Seller" : null;
+          const rl = roles.includes("Customer") ? "Customer" :
+          roles.includes("Seller") ? "Seller" : null;
+
 
           const data = {uname,mail,rl}; 
           setCookie(data);
@@ -154,7 +155,7 @@ export default function LoginSignup() {
       var urlencoded = new URLSearchParams();
       urlencoded.append("grant_type", "client_credentials");
       urlencoded.append("client_id", "admin-cli");
-      urlencoded.append("client_secret", "LP6r0AqrCs4mI0juhUCQzLhfj8akFOdq");
+      urlencoded.append("client_secret", "rMNg8HPiPw8u81sL3geqswRl4G4S2aXt");
 
       var requestOptions = {
         method: 'POST',
