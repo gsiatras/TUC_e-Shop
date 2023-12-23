@@ -23,12 +23,17 @@ body {
 img{
   max-height: 100%;
 }
+
+.input2, select{
+  @apply border-2 border-gray-300 rounded-md px-1 w-full;
+}
+
 .input1, textarea{
   @apply border-2 border-gray-300 rounded-md px-1 w-full;
   @apply mb-2;
 }
 
-.input1:focus, textarea:focus{
+.input1:focus, textarea:focus, .input2:focus, select.focus{
   @apply border-blue-900;
 }
 
