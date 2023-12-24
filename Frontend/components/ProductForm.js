@@ -2,7 +2,7 @@ import Layout from "@/components/seller/Layout";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "./seller/Spinner";
 import { ReactSortable } from "react-sortablejs";
 
@@ -14,16 +14,26 @@ export default function ProductForm({
     price:existingPrice,
     quantity:existingQuantity,
     images:existingImages,
+    category:assignedCategory,
+    properties:assignedProperties
 }) {
     const [title, setTitle] = useState(existingTitle || '');
     const [description, setDescription] = useState(existingDescription || '');
     const [price, setPrice] = useState(existingPrice || '');
     const [quantity, setQuantity] = useState(existingQuantity || '');
+    const [category, setCategory] = useState(assignedCategory || '');
+    const [productProperties, setProductProperties] = useState(assignedProperties || {});
     const [goToProducts, setGoToProducts] = useState(false);
     const [images, setImages] = useState(existingImages || []);
     const [isUploading, setIsUploading] = useState(false);
     const router = useRouter();
     const seller = Cookies.get('username');
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        axios.get('/api/categories').then(result => {
+            setCategories(result.data);
+        })
+    }, []);
 
     async function uploadImages(ev) {
         const files = ev.target?.files;
@@ -45,7 +55,11 @@ export default function ProductForm({
     
     async function saveProduct(ev) {
         ev.preventDefault();
-        const data = {title, description, price, quantity, seller, images};
+        console.log('save props', productProperties);
+        const data = {
+            title,description,price,quantity,seller,images,category,
+            properties:productProperties
+        };
         //console.log(data);
         if (_id){
             //update
@@ -79,6 +93,28 @@ export default function ProductForm({
         // Log the array after removal
         //console.log('After:', updatedImages);
       }
+
+    const propertiesToFill = [];
+    if (categories.length > 0 && category) {
+        let selCatInfo = categories.find(({_id}) => _id === category);
+        propertiesToFill.push(...selCatInfo.properties);
+        while(selCatInfo?.parent?._id) {
+            const parentCat = categories.find(({_id}) => _id === 
+            selCatInfo.parent._id);
+            propertiesToFill.push(...parentCat.properties);
+            selCatInfo = parentCat;
+        }
+        //console.log('proptofill', propertiesToFill);
+    }
+
+    function setProductProp(propName,value) {
+        setProductProperties(prev => {
+            const newProductProps = {...prev};
+            newProductProps[propName] = value;
+            //console.log('new props', newProductProps);
+            return newProductProps;
+        });
+    }
       
     
 
@@ -90,6 +126,28 @@ export default function ProductForm({
                 value={title} 
                 onChange={ev => setTitle(ev.target.value)}
             />
+            <label>Category</label>
+            <select 
+                value={category} 
+                onChange={ev => setCategory(ev.target.value)}>
+                <option value="">Uncategorized</option>
+                {categories.length > 0 && categories.map(c => (
+                    <option value={c._id}>{c.name}</option>
+                ))}
+            </select>
+            {propertiesToFill.length > 0 && propertiesToFill.map(p => (
+                <div className="flex gap-1">
+                    <div>{p.name}</div>
+                    <select
+                        value={productProperties[p.name]}
+                        onChange={ev => 
+                            setProductProp(p.name, ev.target.value)}>
+                        {p.values.map(v => (
+                            <option value={v}>{v}</option>
+                        ))}
+                    </select>
+                </div>
+            ))}
             <label>Photos</label>
             <div className="mb-2 flex flex-wrap gap-1">
                 <ReactSortable 
