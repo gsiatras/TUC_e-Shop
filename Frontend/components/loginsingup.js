@@ -16,16 +16,16 @@ export default function LoginSignup() {
   
   const setCookie = (data) => {
     // Destructure data
-    const { uname, mail, rl } = data;
+    const { uname, mail, rl, refresh_token } = data;
   
     // Set cookies
-    console.log('setting cookie to ' + rl);
+    //console.log('setting cookie to ' + rl);
     Cookies.set('username', uname, { expires: 7 });
     Cookies.set('email', mail, { expires: 7 });
     Cookies.set('role', rl, { expires: 7 });
+    Cookies.set('refreshToken', refresh_token, { expires: 7 });
 
-    const nrole = Cookies.get('role');
-    console.log(nrole);
+    
   };
 
   const handleSignUpClick = () => {
@@ -109,10 +109,11 @@ export default function LoginSignup() {
       const response = await fetch("http://localhost:8080/auth/realms/eshop/protocol/openid-connect/token", requestOptions)
         if (response.ok) {
           const login_response = await response.json()
-          const token = login_response.access_token
+          const token = login_response.access_token;
+          const refresh_token = login_response.refresh_token;
 
           const decodeToken =  await decodeJwt(token)
-          console.log(decodeToken)
+          //console.log(decodeToken)
           
          
           const uname = decodeToken.preferred_username;
@@ -122,11 +123,18 @@ export default function LoginSignup() {
           roles.includes("Seller") ? "Seller" : null;
 
 
-          const data = {uname,mail,rl}; 
+          const data = {uname,mail,rl,refresh_token}; 
           setCookie(data);
 
+          //new_role = Cookies.get('role');
+          //
           // Navigate to the destination
-          router.push('/seller');  
+          if (rl === "Seller") {
+            router.push('/seller');  
+          } else if (new_role === "Customer") {
+            router.push('/costumer');
+          }
+            
           
         } else {
           const err = await response.json()

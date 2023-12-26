@@ -1,4 +1,5 @@
 import Layout from "@/components/seller/Layout";
+import Cookies from "js-cookie";
 import { useEffect, useState } from 'react';
 
 export default function SellerHome() {
@@ -6,8 +7,7 @@ export default function SellerHome() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedUsername = localStorage.getItem('username');
-      console.log(localStorage.getItem("username"));  
+      const storedUsername = Cookies.get('username');
       setUsername(storedUsername || 'seller1');
     }
   }, []);
