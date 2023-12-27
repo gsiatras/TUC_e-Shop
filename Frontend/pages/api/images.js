@@ -23,9 +23,9 @@ export default async function handle(req,res) {
     const exists = await client.bucketExists(bucket)
 
     if (exists) {
-    console.log('Bucket ' + bucket + ' exists.')
+    //console.log('Bucket ' + bucket + ' exists.')
     } else {
-        console.log("No bucket found");
+        //console.log("No bucket found");
     }
 
 
@@ -44,7 +44,7 @@ export default async function handle(req,res) {
             const newFilename = Date.now() + '.' + ext;
 
             const filep = file.path;
-            console.log('filepath: ', filep);
+            //console.log('filepath: ', filep);
 
             var metaData = {
                 'Content-Type':  mime.lookup(file.path),
