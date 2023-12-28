@@ -13,19 +13,19 @@ export default function SellerHome() {
   }, []);
 
   
-  return <Layout>
-    <div className="text-blue-900 flex justify-between">
-      <h2>
-        Hello, <b>{username}</b>
-      </h2>
+  return (
+    <Layout>
+      <div className="text-blue-900 flex justify-between">
+        <h2>
+          Hello, <b>{username}</b>
+        </h2>
 
-      <div className="flex bg-gray-300 gap-1 text-black rounded-lg">
-        <span className="px-2">
-          {username}
-        </span>
+        <div className="flex bg-gray-300 gap-1 text-black rounded-lg">
+          <span className="px-2">
+            {username}
+          </span>
+        </div>
       </div>
-    </div>
-
-
-  </Layout>
+    </Layout>
+  );
 }

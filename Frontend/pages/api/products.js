@@ -20,7 +20,7 @@ export default async function handle(req, res) {
         console.log(properties);
         //console.log(req.body);
         const productDoc = await Product.create({
-            title,description,price,quantity,seller,images,category,properties,
+            title,description,price,quantity,seller,images,category: category || undefined, properties,
         })
         res.json(productDoc);
     }
@@ -28,7 +28,8 @@ export default async function handle(req, res) {
     if (method === 'PUT') {
         const {title,description,price,quantity,seller,images,category,properties,_id} = req.body; 
         console.log(properties);
-        await Product.updateOne({_id}, {title,description,price,quantity,seller,images,category,properties});
+        await Product.updateOne({_id}, {title,description,price,quantity,seller,images,
+            category: category || undefined, properties});
         //console.log("sucess");
         res.json(true);
     }

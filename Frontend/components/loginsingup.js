@@ -131,8 +131,8 @@ export default function LoginSignup() {
           // Navigate to the destination
           if (rl === "Seller") {
             router.push('/seller');  
-          } else if (new_role === "Customer") {
-            router.push('/costumer');
+          } else if (rl === "Customer") {
+            router.push('/customer');
           }
             
           

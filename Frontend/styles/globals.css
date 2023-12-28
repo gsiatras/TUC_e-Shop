@@ -3,22 +3,14 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-/* 
-* {
-	box-sizing: border-box;
-}
+
 
 body {
-	background: #1a202c;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
-} */
+	font-family: 'Roboto', sans-serif;
+
+}  */
 
 img{
   max-height: 100%;
