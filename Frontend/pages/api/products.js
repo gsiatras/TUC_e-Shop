@@ -10,6 +10,9 @@ export default async function handle(req, res) {
             res.json(await Product.findOne({_id:req.query.id}));
         } else if (req.query?.seller) {
             res.json(await Product.find({seller:req.query.seller}));
+        } else if (req.query?.recent) { 
+            //console.log('yes');
+            res.json(await Product.find({}, null, {sort: {'_id':-1}, limit:12}));
         } else {
             res.json(await Product.find());
         } 

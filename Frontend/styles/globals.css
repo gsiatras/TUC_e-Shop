@@ -3,14 +3,15 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,700&family=Roboto:wght@500;700&display=swap');
 
 
-
-body {
+/* body {
 	font-family: 'Roboto', sans-serif;
 
 }  */
+
+
 
 img{
   max-height: 100%;

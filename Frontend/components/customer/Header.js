@@ -2,7 +2,10 @@ import Link from "next/link";
 import styled from "styled-components";
 import GlobalStyle from "./GlobalStyle";
 import Center from "./Center";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
+const router = useRouter;
 const StyledHeader = styled.header`
         background-color: #222;
     `;
@@ -29,7 +32,46 @@ const NavLink = styled(Link)`
     text-decoration:none;
 `;
 
+const NavButton = styled.button`
+    color: #aaa;
+    text-decoration:none;
+`;
+
 export default function Header() {
+    async function signOut() {
+        try {
+            const refreshToken = Cookies.get('refreshToken');
+            const logoutUrl = `http://localhost:8080/auth/realms/eshop/protocol/openid-connect/logout`;
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("client_id", "client");
+            urlencoded.append("client_secret", "3I5qTlVtM7oS4q8802rwJaKlRsiqD6Qp");
+            urlencoded.append('refresh_token', refreshToken);
+            
+
+            const response = await fetch(logoutUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: urlencoded,
+            })
+
+            if (response.ok) {
+                //§console.log('succes')
+                Cookies.remove('role');
+                Cookies.remove('username');
+                Cookies.remove('email');
+                Cookies.remove('refreshToken');
+                router.push('/');
+            } else {
+                const err = await response.json();
+                console.log(err);
+            }
+        } catch (error) {
+            console.log('Error during loging: ', error)
+        }
+    }
+
     return (
         <>
             <GlobalStyle/>
@@ -41,8 +83,8 @@ export default function Header() {
                             <NavLink href={'/customer'}>Home</NavLink>
                             <NavLink href={'/customer/products'}>All products</NavLink>
                             <NavLink href={'/customer/categories'}>Categories</NavLink>
-                            <NavLink href={'/customer/account'}>Account</NavLink>
                             <NavLink href={'/customer/cart'}>Cart (0)</NavLink>
+                            <NavButton onClick={() => signOut()}>Logout</NavButton>
                         </StyledNav>
                     </Wrapper>
                 </Center>
