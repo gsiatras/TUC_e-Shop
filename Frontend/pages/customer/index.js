@@ -34,7 +34,7 @@ export default function CustomerHome() {
 
     return (
         <CustomLayout>
-            <Header></Header>
+            <Header/>
             {productInfo && (
                 <Featured product={productInfo}/> 
             )}

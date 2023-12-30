@@ -4,6 +4,8 @@ import GlobalStyle from "./GlobalStyle";
 import Center from "./Center";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { CartContext } from "./CartContext";
 
 const router = useRouter;
 const StyledHeader = styled.header`
@@ -72,6 +74,9 @@ export default function Header() {
         }
     }
 
+    const {cartProducts} = useContext(CartContext);
+    
+
     return (
         <>
             <GlobalStyle/>
@@ -83,7 +88,7 @@ export default function Header() {
                             <NavLink href={'/customer'}>Home</NavLink>
                             <NavLink href={'/customer/products'}>All products</NavLink>
                             <NavLink href={'/customer/categories'}>Categories</NavLink>
-                            <NavLink href={'/customer/cart'}>Cart (0)</NavLink>
+                            <NavLink href={'/customer/cart'}>Cart ({cartProducts?.length})</NavLink>
                             <NavButton onClick={() => signOut()}>Logout</NavButton>
                         </StyledNav>
                     </Wrapper>

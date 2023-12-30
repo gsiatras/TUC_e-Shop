@@ -2,9 +2,10 @@ import styled from "styled-components";
 import Center from "./Center";
 import GlobalStyle from "./GlobalStyle";
 import Button from "./Button";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ButtonLink from "./ButtonLink";
 import CartIcon from "./icons/CartIcon";
+import { CartContext } from "./CartContext";
 
 
 const Bg = styled.div`
@@ -49,6 +50,12 @@ const Column = styled.div`
 
 
 export default function Featured({product}) {
+    const {addProduct} = useContext(CartContext);
+    
+    function addFeaturedToCart(){
+        addProduct(product._id);
+    }
+    
     return (
         <>
         <Bg>
@@ -64,7 +71,7 @@ export default function Featured({product}) {
                                     outline={1} white={1}>
                                     Read more
                                 </ButtonLink>
-                                <Button white={1} >
+                                <Button white={1} onClick={addFeaturedToCart} >
                                     <CartIcon/>
                                     Add to cart
                                 </Button>
