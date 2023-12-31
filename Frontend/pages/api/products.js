@@ -13,7 +13,12 @@ export default async function handle(req, res) {
         } else if (req.query?.recent) { 
             //console.log('yes');
             res.json(await Product.find({}, null, {sort: {'_id':-1}, limit:12}));
+        } else if (req.query?.cartProducts) {
+            //console.log('yes');
+            const ids = req.query['ids[]'];
+            res.json(await Product.find({_id:ids}));
         } else {
+            //console.log('yes1');
             res.json(await Product.find());
         } 
     }
