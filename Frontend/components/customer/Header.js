@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { CartContext } from "./CartContext";
 
-const router = useRouter;
+
 const StyledHeader = styled.header`
         background-color: #222;
     `;
@@ -40,6 +40,7 @@ const NavButton = styled.button`
 `;
 
 export default function Header() {
+    const router = useRouter();
     async function signOut() {
         try {
             const refreshToken = Cookies.get('refreshToken');

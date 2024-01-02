@@ -36,10 +36,15 @@ export function CartContextProvider({children}) {
             }
         })
     }
+
+    function emptyCart() {
+        Cookies.remove("cart");
+    }
     
 
     return (
-        <CartContext.Provider value={{cartProducts, setCartProducts, addProduct, removeProduct}}>
+        <CartContext.Provider value={{cartProducts, 
+        setCartProducts, addProduct, removeProduct, emptyCart}}>
             {children}
         </CartContext.Provider>
     );

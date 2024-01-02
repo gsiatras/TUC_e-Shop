@@ -14,6 +14,7 @@ export default function Products() {
         })
     }, []);
     return <Layout>
+        <h1 className="header1">Products</h1>
         <Link className="btn-primary" href={'products/new'}>Add new product</Link>
         <table className="basic mt-2">
             <thead>

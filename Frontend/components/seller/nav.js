@@ -8,8 +8,8 @@ export default function Nav({show}) {
     const activeLink = inactiveLink+' bg-highlight text-black rounded-sm';
     const inactiveIcon = 'w-6 h-6';
     const activeIcon = inactiveIcon+' text-primary';
+    const router = useRouter();
     const {pathname} = router;
-    const router = useRouter;
 
     async function signOut() {
 
