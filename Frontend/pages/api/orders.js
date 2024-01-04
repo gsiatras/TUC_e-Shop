@@ -37,7 +37,7 @@ export default async function handler(req, res) {
         
         const orderDoc = await Order.create({
             seller,line_items,name,email,city,postalCode,
-            streetAddress,country,paid:true,status:'Pending',
+            streetAddress,country,paid:false,status:'Pending',
         });
     
         const session = await stripe.checkout.sessions.create({

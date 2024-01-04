@@ -5,7 +5,6 @@ import Header from "@/components/customer/Header";
 export default function CartPage() {
     return(
     <CustomLayout>
-        <Header/>
         <Cart/>
     </CustomLayout> 
     );

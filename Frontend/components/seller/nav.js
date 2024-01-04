@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Logo from "../Logo";
+import axios from "axios";
 
 export default function Nav({show}) {
     const inactiveLink = 'flex gap-1';
@@ -12,38 +13,19 @@ export default function Nav({show}) {
     const {pathname} = router;
 
     async function signOut() {
-
-        try {
-            const refreshToken = Cookies.get('refreshToken');
-            const logoutUrl = `http://localhost:8080/auth/realms/eshop/protocol/openid-connect/logout`;
-            var urlencoded = new URLSearchParams();
-            urlencoded.append("client_id", "client");
-            urlencoded.append("client_secret", "3I5qTlVtM7oS4q8802rwJaKlRsiqD6Qp");
-            urlencoded.append('refresh_token', refreshToken);
-            
-
-            const response = await fetch(logoutUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: urlencoded,
-            })
-
-            if (response.ok) {
-                //§console.log('succes')
-                Cookies.remove('role');
-                Cookies.remove('username');
-                Cookies.remove('email');
-                Cookies.remove('refreshToken');
-                router.push('/');
-            } else {
-                const err = await response.json();
-                console.log(err);
-            }
-        } catch (error) {
-            console.log('Error during loging: ', error)
-        }
+        const res = await axios.post('/api/login?logout='+true);
+        console.log(res);
+        if (res.statusText==="OK"){
+            //§console.log('succes')
+            Cookies.remove('role');
+            Cookies.remove('username');
+            Cookies.remove('email');
+            router.push('/');
+          }
+          else {
+            alert("Logout failed!");
+            console.log(res);
+          }
     }
     
     return (

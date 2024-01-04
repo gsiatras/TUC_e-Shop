@@ -2,6 +2,7 @@ import CustomLayout from "@/components/customer/CustomLayout";
 import Featured from "@/components/customer/Featured";
 import GlobalStyle from "@/components/customer/GlobalStyle";
 import Header from "@/components/customer/Header";
+import Information from "@/components/customer/Information";
 import NewProducts from "@/components/customer/NewProducts";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -34,7 +35,6 @@ export default function CustomerHome() {
 
     return (
         <CustomLayout>
-            <Header/>
             {productInfo && (
                 <Featured product={productInfo}/> 
             )}

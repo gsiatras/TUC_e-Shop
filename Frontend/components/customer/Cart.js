@@ -8,21 +8,21 @@ import CartTable from "./CartTable";
 import Input from "./Input";
 import Cookies from "js-cookie";
 import Header from "./Header";
+import WhiteBox from "./WhiteBox";
 
 
 
 const ColumnsWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1.2fr .8fr;
+    grid-template-columns: 1fr;
     gap: 40px;
     margin-top: 40px;
+    margin-bottom: 450px;
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1.3fr .7fr;
+    }
 `; 
 
-const Box = styled.div`
-    background-color: #fff;
-    border-radius: 10px;
-    padding:  30px;
-`;
 
 const ProductInfoCell = styled.td`
     padding: 10px 0;
@@ -44,12 +44,28 @@ const ProductImageBox = styled.div`
 `;
 
 const QuantityLabel = styled.span`
-    padding: 0 3px;
+    padding: 0 2px;
 `;
 
 const CityHolder = styled.div`
     display: flex;
     gap: 5px;
+`;
+
+const SellerHeader = styled.div`
+    margin-bottom: 5px;
+`;
+
+const SellerCart = styled.div`
+    margin-top: 30px;
+    border-top: 1px solid rgba(0,0,0,.3);
+`;
+
+const OrderTotalDiv = styled.div`
+    margin-top: 20px;
+    border-top: 1px solid rgba(0,0,0,1);
+    text-align: right;
+    font-weight: 700;
 `;
 
 
@@ -65,20 +81,44 @@ export default function Cart() {
     const [country, setCountry] = useState('');
     const [email, setEmail] = useState(Cookies.get('email'));
     const [success, setSuccess] = useState(false);
+    const [uniqueSellers, setUniqueSellers] =  useState([]);
 
 
     useEffect(() => {
-        if (cartProducts.length > 0) {
+        if (cartProducts?.length > 0) {
             axios.get('/api/products', {params:{cartProducts:true, ids:cartProducts}}).then(
                 response => {
                     setProducts(response.data);
-                    console.log('products', cartProducts);
+                    //console.log('products', cartProducts);
                 }
             )
         } else {
             setProducts([]);
         }
-    }, [cartProducts])
+    }, [cartProducts]);
+
+    useEffect(() => {
+        if (products?.length > 0) {
+            const sellers = [...new Set(products.map(product => product.seller))];
+    
+            const initializedSellers = sellers.map(seller => ({ sellerName: seller, total: 0 }));
+    
+            for (const productId of cartProducts) {
+                const product = products.find(p => p._id === productId);
+                if (product) {
+                    const sellerIndex = initializedSellers.findIndex(s => s.sellerName === product.seller);
+                    if (sellerIndex !== -1) {
+                        initializedSellers[sellerIndex].total += product.price || 0;
+                    }
+                }
+            }
+    
+            setUniqueSellers(initializedSellers);
+        } else {
+            setUniqueSellers([]);
+        }
+    }, [products, cartProducts]);
+    
 
     function moreOfThisProduct(id) {
         addProduct(id);
@@ -86,13 +126,20 @@ export default function Cart() {
 
     function lessOfThisProduct(id) {
         removeProduct(id);
+        //console.log('Products after remove 2: c',cartProducts);
     }
 
+    
     let total = 0;
     for (const productId of cartProducts) {
         const price = products.find(p => p._id === productId)?.price || 0;
         total += price;
     }
+
+    
+    
+    
+
     async function goToPayment() {
         const res = await axios.post('/api/orders', {
             name,email,city,postalCode,streetAddress,country,
@@ -118,7 +165,7 @@ export default function Cart() {
                 <ColumnsWrapper>
                     <Box>
                         <h1>
-                        Thanks for your order!
+                            Thanks for your order!
                         </h1>
                         <p>
                             Seller will contact you soon.
@@ -133,60 +180,70 @@ export default function Cart() {
     return(
         <Center>
                 <ColumnsWrapper>
-                    <Box>
+                    <WhiteBox>
                         <h1>Cart</h1>
                         {!cartProducts?.length && (
                             <div>Your cart is empty</div>
                         )}
-                        {cartProducts?.length > 0 && (
-                            <CartTable>
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {products.map(product => (
-                                        <tr>
-                                            <ProductInfoCell>
-                                                <ProductImageBox>
-                                                    <img src={product.images[0]}></img>
-                                                </ProductImageBox>
-                                                {product.title}
-                                            </ProductInfoCell>
-                                            <td>
-                                                <QuantityLabel>
-                                                    <Button 
-                                                        onClick={() => lessOfThisProduct(product._id)}>
-                                                        -
-                                                    </Button>
-                                                    {cartProducts.filter(id => id ===
-                                                    product._id).length}
-                                                    <Button 
-                                                        onClick={() => moreOfThisProduct(product._id)}>
-                                                        +
-                                                    </Button>
-                                                </QuantityLabel>
-                                            </td>
-                                            <td>
-                                                {cartProducts.filter(id => id ===
-                                                product._id).length * product.price} €
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    <tr>
-                                        <td>Total</td>
-                                        <td></td>
-                                        <td>{total} €</td>
-                                    </tr>
-                                </tbody>
-                            </CartTable>
-                        )}
-                    </Box>
+                        {uniqueSellers?.length && uniqueSellers.map(sel => (
+                            <SellerCart key={sel.sellerName}>
+                                <SellerHeader>
+                                    <p>Seller: {sel.sellerName}</p>
+                                </SellerHeader>
+                                {cartProducts?.length > 0 && (
+                                    <CartTable>
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {products.filter(product => product.seller === sel.sellerName).map(product => (
+                                                <tr key={product._id}> 
+                                                    <ProductInfoCell>
+                                                        <ProductImageBox>
+                                                            <img src={product.images[0]}></img>
+                                                        </ProductImageBox>
+                                                        {product.title}
+                                                    </ProductInfoCell>
+                                                    <td>
+                                                        <QuantityLabel>
+                                                            <Button 
+                                                                onClick={() => lessOfThisProduct(product._id)}>
+                                                                -
+                                                            </Button>
+                                                            {cartProducts.filter(id => id ===
+                                                            product._id).length}
+                                                            <Button 
+                                                                onClick={() => moreOfThisProduct(product._id)}>
+                                                                +
+                                                            </Button>
+                                                        </QuantityLabel>
+                                                    </td>
+                                                    <td>
+                                                        {cartProducts.filter(id => id ===
+                                                        product._id).length * product.price} €
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            <tr>
+                                                <td>Total</td>
+                                                <td></td>
+                                                <td>{sel.total} €</td>
+                                            </tr>
+                                        </tbody>
+                                    </CartTable>
+                                )}
+                            </SellerCart>
+                        ))}
+                        <OrderTotalDiv>
+                                    Order Total: {total} €
+                        </OrderTotalDiv>
+                    </WhiteBox>
                     {!!cartProducts?.length && (
-                        <Box>
+                        <WhiteBox>
                             <h1>Order information</h1>
                             <Input 
                                 type="text" 
@@ -237,7 +294,7 @@ export default function Cart() {
                                 onClick={goToPayment}>
                                 Continue to payment
                             </Button>
-                        </Box>
+                        </WhiteBox>
                     )}
                 </ColumnsWrapper>
             </Center>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from "next/router";
 import styles from '../styles/LoginSignup.module.css'; 
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 
 
@@ -13,19 +14,20 @@ export default function LoginSignup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const setAccessTokenCookie = (token) => {
+    console.log('dsa');
+    Cookies.set('access_token', token, {expires: 7});
+  };
   
   const setCookie = (data) => {
     // Destructure data
-    const { uname, mail, rl, refresh_token } = data;
+    const {uname, mail, rl} = data;
   
     // Set cookies
     //console.log('setting cookie to ' + rl);
     Cookies.set('username', uname, { expires: 7 });
     Cookies.set('email', mail, { expires: 7 });
     Cookies.set('role', rl, { expires: 7 });
-    Cookies.set('refreshToken', refresh_token, { expires: 7 });
-
-    
   };
 
   const handleSignUpClick = () => {
@@ -66,7 +68,7 @@ export default function LoginSignup() {
       try {
         await Login({ username, password });
       } catch (error) {
-        console.error('Login failed');
+        console.error(error);
       }
 
     } else if (action === "Sign Up") {
@@ -87,144 +89,30 @@ export default function LoginSignup() {
 
   const Login = async (data) => {
     const { username, password } = data;
+    const res = await axios.post('/api/login?login='+true, data);
+    //console.log(res);
+    const ndata = res.data;
+    setCookie(ndata);
 
-    try {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-      
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("username", username);
-      urlencoded.append("password", password);
-      urlencoded.append("client_id", "client");
-      urlencoded.append("client_secret", "3I5qTlVtM7oS4q8802rwJaKlRsiqD6Qp");
-      urlencoded.append("grant_type", "password");
-      
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: 'follow'
-      };
-      
-      const response = await fetch("http://localhost:8080/auth/realms/eshop/protocol/openid-connect/token", requestOptions)
-        if (response.ok) {
-          const login_response = await response.json()
-          const token = login_response.access_token;
-          const refresh_token = login_response.refresh_token;
-
-          const decodeToken =  await decodeJwt(token)
-          //console.log(decodeToken)
-          
-         
-          const uname = decodeToken.preferred_username;
-          const mail = decodeToken.email;
-          const roles = decodeToken.realm_access.roles;
-          const rl = roles.includes("Customer") ? "Customer" :
-          roles.includes("Seller") ? "Seller" : null;
-
-
-          const data = {uname,mail,rl,refresh_token}; 
-          setCookie(data);
-
-          //new_role = Cookies.get('role');
-          //
-          // Navigate to the destination
-          if (rl === "Seller") {
-            router.push('/seller');  
-          } else if (rl === "Customer") {
-            router.push('/customer');
-          }
-            
-          
-        } else {
-          const err = await response.json()
-          console.log('Login failed ', err)
-          Cookies.remove('role');
-          Cookies.remove('username');
-          Cookies.remove('email');
-          alert("Login failed: " + err.error_description);
-          return err;
-        }
-    } catch (error) {
-      console.log('Error during loging: ', error)
-    }
+    if (ndata.rl === "Seller") {
+      router.push('/seller');  
+    } else if (ndata.rl === "Customer") {
+      router.push('/customer');
+    }   
   };
 
 
   const Register = async (data) => {
     const { username, email, password, role } = data;
-    //console.log('Register:', { username, email, password, role });
-
-    // Get access token
-    try {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("grant_type", "client_credentials");
-      urlencoded.append("client_id", "admin-cli");
-      urlencoded.append("client_secret", "rMNg8HPiPw8u81sL3geqswRl4G4S2aXt");
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: 'follow'
-      };
-
-      const first_response = await fetch("http://localhost:8080/auth/realms/master/protocol/openid-connect/token", requestOptions)
-      if (first_response.ok) {
-        const adminAccessToken = await first_response.json();
-        console.log(adminAccessToken)
-        const token = adminAccessToken.access_token
-
-        // Register after getting the access token
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + token);
-        
-        var raw = JSON.stringify({
-          "email": email,
-          "enabled": "true",
-          "username": username,
-          "attributes": {
-            "client_id": "client"
-          },
-          "groups": [
-            role
-          ],
-          "credentials": [
-            {
-              "type": "password",
-              "value": password,
-              "temporary": false
-            }
-          ]
-        });
-        
-        var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: raw,
-          redirect: 'follow'
-        };
-        
-        const register_user = await fetch("http://localhost:8080/auth/admin/realms/eshop/users", requestOptions)
-        if (register_user.ok) {
-          console.log("Registration Succesfull")
-          //const user = await register_user.json();
-          window.location.reload()
-        } else {
-          console.log("error")
-        }
-      } else {
-        const error = await first_response.json();
-        console.log(error)  
-      }
-    } catch (error) {
-      console.log(error)
+    const res = await axios.post('/api/login?register='+true, data);
+    console.log(res);
+    if (res.statusText==="OK"){
+      window.location.reload()
     }
-    
+    else {
+      alert("Resigtration failed!");
+      console.log(res);
+    }
   };
 
 

@@ -4,17 +4,22 @@ import GlobalStyle from "./GlobalStyle";
 import Center from "./Center";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
+import axios from "axios";
+import BarsIcaon from "./icons/Bars";
+import { useSearchParams } from "next/navigation";
 
 
 const StyledHeader = styled.header`
-        background-color: #222;
-    `;
+    background-color: #222;
+`;
 
 const Logo = styled(Link)`
     color:#fff;
     text-decoration:none;
+    position: relative;
+    z-index: 3;
 `;
 
 const Wrapper = styled.div`
@@ -24,59 +29,78 @@ const Wrapper = styled.div`
 `;
 
 const StyledNav = styled.nav`
-    display: flex;
+    ${props => props.mobileNavActive ? `
+        display: block;
+    ` : ` 
+        display: none;
+    `}
     gap: 15px;
+    position:fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 70px 20px 20px;
+    background-color: #222;
+    @media screen and (min-width: 768px) {
+        display:flex;
+        position: static;
+        padding: 0;
+    }
 
 `;
 
 const NavLink = styled(Link)`
+    display: block;
     color: #aaa;
     text-decoration:none;
+    padding: 10px 0;
+    @media screen and (min-width: 768px) {
+        padding: 0;
+    }
 `;
 
 const NavButton = styled.button`
     color: #aaa;
     text-decoration:none;
+    padding: 10px 0;
+    @media screen and (min-width: 768px) {
+        padding: 0;
+    }
+`;
+
+const NavButton2 = styled.button`
+    border: 0;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+    @media screen and (min-width: 768px){
+       display: none;
+    }
 `;
 
 export default function Header() {
     const router = useRouter();
+
     async function signOut() {
-        try {
-            const refreshToken = Cookies.get('refreshToken');
-            const logoutUrl = `http://localhost:8080/auth/realms/eshop/protocol/openid-connect/logout`;
-            var urlencoded = new URLSearchParams();
-            urlencoded.append("client_id", "client");
-            urlencoded.append("client_secret", "3I5qTlVtM7oS4q8802rwJaKlRsiqD6Qp");
-            urlencoded.append('refresh_token', refreshToken);
-            
-
-            const response = await fetch(logoutUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: urlencoded,
-            })
-
-            if (response.ok) {
-                //§console.log('succes')
-                Cookies.remove('role');
-                Cookies.remove('username');
-                Cookies.remove('email');
-                Cookies.remove('refreshToken');
-                router.push('/');
-            } else {
-                const err = await response.json();
-                console.log(err);
-            }
-        } catch (error) {
-            console.log('Error during loging: ', error)
-        }
+        const res = await axios.post('/api/login?logout='+true);
+        console.log(res);
+        if (res.statusText==="OK"){
+            //§console.log('succes')
+            Cookies.remove('role');
+            Cookies.remove('username');
+            Cookies.remove('email');
+            router.push('/');
+          }
+          else {
+            alert("Logout failed!");
+            console.log(res);
+          }
     }
 
     const {cartProducts} = useContext(CartContext);
-    
+    const [mobileNavActive, setMobileNavActive] = useState(false);
 
     return (
         <>
@@ -85,13 +109,16 @@ export default function Header() {
                 <Center>
                     <Wrapper>
                         <Logo href={'/customer'}>TUCshop</Logo>
-                        <StyledNav>
+                        <StyledNav mobileNavActive={mobileNavActive}>
                             <NavLink href={'/customer'}>Home</NavLink>
                             <NavLink href={'/customer/products'}>All products</NavLink>
-                            <NavLink href={'/customer/categories'}>Categories</NavLink>
-                            <NavLink href={'/customer/cart'}>Cart ({cartProducts?.length})</NavLink>
+                            <NavLink href={'/customer/orders'}>Orders</NavLink>
+                            <NavLink href={'/customer/cart'}>Cart ({cartProducts?.length || 0})</NavLink>
                             <NavButton onClick={() => signOut()}>Logout</NavButton>
                         </StyledNav>
+                        <NavButton2 onClick={() => setMobileNavActive(prev => !prev)}>
+                                <BarsIcaon/>
+                        </NavButton2>
                     </Wrapper>
                 </Center>
             </StyledHeader>

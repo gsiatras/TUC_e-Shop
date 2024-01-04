@@ -22,6 +22,7 @@ export default function OrdersPage() {
                         <th>Date</th>
                         <th>Recipient</th>
                         <th>Products</th>
+                        <th>Paid</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -40,6 +41,9 @@ export default function OrdersPage() {
                                         {l.price_data?.product_data?.name} x {l.quantity} <br/>
                                     </>
                                 ))}
+                            </td>
+                            <td className={order.paid ? 'text-green-600' : 'text-red-400'}> 
+                                {order.paid ? 'YES' : 'NO'}
                             </td>
                             <td>
                                 {order.status}

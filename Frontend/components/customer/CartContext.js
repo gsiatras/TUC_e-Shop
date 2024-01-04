@@ -10,13 +10,15 @@ export function CartContextProvider({children}) {
     useEffect(() => {
         if (cartProducts?.length > 0) {
             Cookies.set("cart", JSON.stringify(cartProducts), { expires: 1 / 24 });
-          }
+            //console.log(cartProducts);
+        }
     }, [cartProducts]);
 
     useEffect(() => {
         if (Cookies.get("cart")) {
             setCartProducts(JSON.parse(Cookies.get("cart")));
-          }
+            //console.log('Cookie products:', cartProducts);
+        } 
     }, []);
 
     function addProduct(productId) {
@@ -27,11 +29,13 @@ export function CartContextProvider({children}) {
         setCartProducts(prev => {
             const pos = prev.indexOf(productId);
             if (pos !== -1) {
-                console.log('products in context', cartProducts);
-                return prev.filter((value, index) => index !== pos);
+                const updatedProducts = prev.filter((value, index) => index !== pos);
+                if (!updatedProducts.length > 0) {
+                    Cookies.remove("cart");
+                }
+                return updatedProducts;
             } else {
-                console.log('asd');
-                console.log('products in context', cartProducts);
+                //console.log('products in context', cartProducts);
                 return prev;
             }
         })

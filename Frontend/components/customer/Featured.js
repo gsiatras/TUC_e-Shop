@@ -17,7 +17,10 @@ const Bg = styled.div`
 const Title = styled.h1`
     margin:0;
     font-weight:normal;
-    font-size:2.4rem;
+    font-size: 1.5rem;
+    @media screen and (min-width: 768px) {
+        font-size:3rem;
+    }
 `;
 
 const Desc = styled.p`
@@ -27,12 +30,29 @@ const Desc = styled.p`
 
 const ColumnsWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: 1fr ;
     gap: 40px;
     img{
         max-width: 100%; 
+        max-height: 250px;
     }
-    
+    div:nth-child(2) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    div:nth-child(1) {
+        order:2;
+    }
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1.2fr 0.8fr;
+        div:nth-child(1){
+            order:0;
+        }
+        img{
+            max-width: 100%; 
+        }
+    }
 `;
 
 const ButtonsWrapper = styled.div`
@@ -67,7 +87,7 @@ export default function Featured({product}) {
                             <Desc>{product.description} </Desc>
                             <ButtonsWrapper>
                                 <ButtonLink 
-                                    href={'/customer/products/'+product._id} 
+                                    href={'/customer/product/'+product._id} 
                                     outline={1} white={1}>
                                     Read more
                                 </ButtonLink>

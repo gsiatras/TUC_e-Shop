@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Spinner from "./seller/Spinner";
+import Spinner from "./Spinner";
 import { ReactSortable } from "react-sortablejs";
 
 
