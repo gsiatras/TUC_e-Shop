@@ -3,9 +3,9 @@ const { Schema, model, models } = require("mongoose");
 const OrderSchema = new Schema({
     seller:{type:String, required:true},
     line_items:{type:Object, required:true},
-    name:String,
+    name:{type:String, required:true},
     city:String,
-    email:String,
+    email:{type:String, required:true},
     postalCode:String,
     streetAddress:String,
     country:String,

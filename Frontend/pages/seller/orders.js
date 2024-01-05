@@ -6,12 +6,58 @@ import { useEffect, useState } from "react";
 export default function OrdersPage() {
     const [orders, setOrders] = useState([]);
     const seller = Cookies.get('username');
+    const [orderStatus, setOrderStatus] = useState('');
+    const [newOrders, setNewOrders] = useState(orders);
+    const orderStatuses = ['Shipped', 'Canceled', 'Completed', 'Pending'];
+    const [selectedStatuses, setSelectedStatuses] = useState({});
+
+
     
     useEffect(() => {
+        //console.log({orders});
         axios.get('/api/orders?seller='+seller).then(response => {
             setOrders(response.data);
         })
     }, []);
+
+    
+
+    function changeOrderStatus(orderId, newStatus, oldOrders){
+        if (!orderId || !newStatus || !orders.length > 0) {
+            console.log('Error');
+            return 
+        } else {
+            const orderIndex = oldOrders.findIndex(order => order._id === orderId);
+            if (orderIndex !== -1) {
+                // If the order ID is found in the array, update the status
+                oldOrders[orderIndex].status = newStatus;
+                setOrders(oldOrders);
+                setSelectedStatuses(prevStatuses => ({
+                    ...prevStatuses,
+                    [orderId]: newStatus,
+                }));
+                //console.log(`Order ${orderId} status changed to ${orders[orderIndex].status}`);
+            } else {
+                console.log(`Order ${orderId} not found`);
+            }
+        }
+    }
+
+    function saveChanges() {
+        Object.keys(selectedStatuses).forEach(orderId => {
+            const newStatus = selectedStatuses[orderId];
+            //console.log(newStatus);
+            // Make an axios request to update the order on the server
+            axios.put('/api/orders?orderId='+orderId, {status:newStatus})
+                .then(response => {
+                    //console.log(`Order ${orderId} updated successfully`);
+                })
+                .catch(error => {
+                    console.error(`Error updating order ${orderId}:`, error);
+                });
+        });
+    }
+    
 
     return(
         <Layout>
@@ -28,7 +74,7 @@ export default function OrdersPage() {
                 </thead>
                 <tbody>
                     {orders.length > 0 && orders.map(order => (
-                        <tr>
+                        <tr key={order._id}>
                             <td>{(new Date(order.createdAt)).toLocaleString()}</td>
                             <td>
                                 {order.name} {order.email} <br/>
@@ -46,12 +92,27 @@ export default function OrdersPage() {
                                 {order.paid ? 'YES' : 'NO'}
                             </td>
                             <td>
-                                {order.status}
+                            <select 
+                                onChange={ev => changeOrderStatus(order._id, ev.target.value, orders)} 
+                                value={selectedStatuses[order._id] || order.status}
+                            >
+                                {order.status && (
+                                    <option value="">{order.status}</option>
+                                )}
+                                {orderStatuses
+                                    .filter(status => status !== order.status) // Exclude the current order status
+                                    .map(status => (
+                                        <option key={status} value={status}>{status}</option>
+                                    ))}
+                            </select>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {Object.keys(selectedStatuses).length > 0 && (
+                <button className="btn-default mt-2" onClick={() => saveChanges()}>Save changes</button>
+            )}
         </Layout>
 
     );

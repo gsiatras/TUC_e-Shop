@@ -28,9 +28,9 @@ export async function middleware(req) {
         return NextResponse.redirect(absoluteHomeUrl);
         
       } else if (!accessToken && url.includes('/customer') || (accessToken && rl !== 'Customer' && url.includes('/customer'))) {
-        console.log("Not authenticated");
-        console.log(accessToken);
-        console.log(req.cookies);
+        // console.log("Not authenticated");
+        // console.log(accessToken);
+        // console.log(req.cookies);
         
         return NextResponse.redirect(absoluteHomeUrl);
       }

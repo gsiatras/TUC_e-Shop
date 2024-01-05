@@ -144,7 +144,7 @@ export default function Cart() {
         const res = await axios.post('/api/orders', {
             name,email,city,postalCode,streetAddress,country,
             cartProducts,
-            seller:products[0]?.seller,
+            sellers:uniqueSellers,
         })
         if (res.data.url){
             window.location = res.data.url;
@@ -163,14 +163,14 @@ export default function Cart() {
             <>
             <Center>
                 <ColumnsWrapper>
-                    <Box>
+                    <WhiteBox>
                         <h1>
                             Thanks for your order!
                         </h1>
                         <p>
                             Seller will contact you soon.
                         </p>
-                    </Box>
+                    </WhiteBox>
                 </ColumnsWrapper>
             </Center>
             </>
@@ -185,7 +185,7 @@ export default function Cart() {
                         {!cartProducts?.length && (
                             <div>Your cart is empty</div>
                         )}
-                        {uniqueSellers?.length && uniqueSellers.map(sel => (
+                        {uniqueSellers?.length > 0 && uniqueSellers.map(sel => (
                             <SellerCart key={sel.sellerName}>
                                 <SellerHeader>
                                     <p>Seller: {sel.sellerName}</p>
@@ -238,9 +238,11 @@ export default function Cart() {
                                 )}
                             </SellerCart>
                         ))}
-                        <OrderTotalDiv>
-                                    Order Total: {total} €
-                        </OrderTotalDiv>
+                        {products?.length > 0 && (
+                            <OrderTotalDiv>
+                                Order Total: {total} €
+                            </OrderTotalDiv>
+                        )} 
                     </WhiteBox>
                     {!!cartProducts?.length && (
                         <WhiteBox>

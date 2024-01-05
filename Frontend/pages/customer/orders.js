@@ -1,10 +1,11 @@
-import Cart from "@/components/customer/Cart";
+import Orders from "@/components/customer/Orders";
 import CustomLayout from "@/components/customer/CustomLayout";
 
-export default function CartPage() {
+export default function OrdersPage() {
+    
     return(
     <CustomLayout>
-        <Cart/>
+        <Orders/>
     </CustomLayout> 
     );
 }

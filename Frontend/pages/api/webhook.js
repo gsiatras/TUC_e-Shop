@@ -21,17 +21,24 @@ export default async function handler(req,res) {
   // Handle the event
   switch (event.type) {
     case 'checkout.session.completed':
+      //console.log('asdasd');
       const data = event.data.object;
-      const orderId = data.metadata.orderId;
+      const orderIds = data.metadata.orderIds;
+      //console.log(orderIds);
       const paid = data.payment_status === 'paid';
-      console.log(paid);
-      console.log(orderId);
-      if (orderId && paid) {
-        await Order.findByIdAndUpdate(orderId,{paid:true})
-      }
+      
+      if (orderIds) {
+        const orderIdArray = orderIds.split(',');
+    
+        for (const id of orderIdArray) {
+            if (id && paid) {
+                await Order.findByIdAndUpdate(id, { paid: true });
+            }
+        }
+    }
       break;
     default:
-    console.log(`Unhandled event type ${event.type}`);
+    
   }
   res.status(200).send('ok');
 }
@@ -41,3 +48,4 @@ export const config = {
     api: {bodyParser:false,}
 }
 //acct_1OU5hwJvUVrQpHMk
+//merit-clever-cute-envy
