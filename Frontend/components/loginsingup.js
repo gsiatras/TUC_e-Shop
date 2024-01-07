@@ -6,6 +6,7 @@ import axios from 'axios';
 
 
 
+
 export default function LoginSignup() {
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
   const [action, setAction] = useState("Login");
@@ -36,7 +37,7 @@ export default function LoginSignup() {
     setRole('');
     setIsRightPanelActive(true);
     setAction("Sign Up");
-    console.log(action);
+    //console.log(action);
   };
 
   const handleSignInClick = () => {
@@ -45,7 +46,7 @@ export default function LoginSignup() {
     setEmail("");
     setIsRightPanelActive(false);
     setAction("Login");
-    console.log(action);
+    //console.log(action);
   };
 
   const handleRoleChange = (event) => {
@@ -90,10 +91,14 @@ export default function LoginSignup() {
   const Login = async (data) => {
     const { username, password } = data;
     const res = await axios.post('/api/login?login='+true, data);
-    //console.log(res);
+    console.log(res);
     const ndata = res.data;
     setCookie(ndata);
 
+    if (res.data.error === "invalid_grant") {
+      alert("Wrong username or password!");
+      return;
+    }
     if (ndata.rl === "Seller") {
       router.push('/seller');  
     } else if (ndata.rl === "Customer") {
@@ -105,7 +110,7 @@ export default function LoginSignup() {
   const Register = async (data) => {
     const { username, email, password, role } = data;
     const res = await axios.post('/api/login?register='+true, data);
-    console.log(res);
+    //console.log(res);
     if (res.statusText==="OK"){
       window.location.reload()
     }
@@ -133,7 +138,7 @@ export default function LoginSignup() {
   return (
     
     <div className={styles.body}>
-      <h2 className={styles.bigheader}>Cloud Computing App</h2>
+      <h2 className={styles.bigheader}>TUCshop</h2>
       <div className={isRightPanelActive ? `${styles.container} ${styles.rightPanelActive}` : styles.container}>
         <div className={`${styles.formContainer} ${styles.signUpContainer}`}>
           <form className={styles.f} action="#">

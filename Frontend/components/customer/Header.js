@@ -111,7 +111,8 @@ export default function Header() {
                         <Logo href={'/customer'}>TUCshop</Logo>
                         <StyledNav mobileNavActive={mobileNavActive}>
                             <NavLink href={'/customer'}>Home</NavLink>
-                            <NavLink href={'/customer/products'}>All products</NavLink>
+                            <NavLink href={'/customer/products'}>Products</NavLink>
+                            <NavLink href={'/customer/categories'}>Categories</NavLink>
                             <NavLink href={'/customer/orders'}>Orders</NavLink>
                             <NavLink href={'/customer/cart'}>Cart ({cartProducts?.length || 0})</NavLink>
                             <NavButton onClick={() => signOut()}>Logout</NavButton>

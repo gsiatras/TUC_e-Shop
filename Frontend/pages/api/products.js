@@ -17,8 +17,43 @@ export default async function handle(req, res) {
             //console.log('yes');
             const ids = req.query['ids[]'];
             res.json(await Product.find({_id:ids}));
+        } else if (req.query?.limitCategories) {
+            const categoryIds = req.query.limitCategories.split(',');
+            res.json(await Product.find({category:categoryIds}, null, {limit: 3, sort:{'_id':-1}}))
+        } else if (req.query?.categories) {
+            const {categories, sort, ...filters} = req.query;
+            const categoryIds = categories.split(',');
+
+            if (Object.keys(filters).length === 0 && !sort) {
+                res.json(await Product.find({category:categoryIds}, null, {sort:{'_id':-1}}))
+
+            } else if (Object.keys(filters).length > 0 && sort){
+                const [sortField, sortOrder] = sort.split('-');
+                const sortOptions = {};
+                sortOptions[sortField] = sortOrder === 'asc' ? 1 : -1;
+                const dynamicQuery = {};
+                Object.keys(filters).forEach(key => {
+                    dynamicQuery[`properties.${key}`] = filters[key];
+                });
+                res.json(await Product.find({category:categoryIds, ...dynamicQuery},null,
+                    { sort: sortOptions }));
+
+            } else if (Object.keys(filters).length === 0 && sort) {
+                const [sortField, sortOrder] = sort.split('-');
+                const sortOptions = {};
+                sortOptions[sortField] = sortOrder === 'asc' ? 1 : -1;
+                res.json(await Product.find({category:categoryIds}, null, { sort: sortOptions }))
+
+            } else {
+                const dynamicQuery = {};
+                Object.keys(filters).forEach(key => {
+                    dynamicQuery[`properties.${key}`] = filters[key];
+                });
+                res.json(await Product.find({category:categoryIds, ...dynamicQuery}));
+                
+            }
         } else {
-            //console.log('yes1');
+            console.log('yes1');
             res.json(await Product.find());
         } 
     }

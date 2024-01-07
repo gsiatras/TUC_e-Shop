@@ -1,37 +1,37 @@
 import CustomLayout from "@/components/customer/CustomLayout";
 import Product from "@/components/customer/Product";
 import axios from "axios";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
 
 
 
 
-export default function ProductPage() {
-    const [product, setProduct] = useState('');
-    const router = useRouter();
-    const {id} = router.query;
 
-    
-
-    useEffect(() => {
-        if (!id){
-            return;
-        }
-        axios.get('/api/products?id='+id).then(
-            response => {
-                setProduct(response.data);
-                //console.log(product);
-            }
-        )
-    }, [id]);
-
+export default function ProductPage({product}) {
     return (
         <CustomLayout>
-            {product && (
-                <Product {...product}/> 
-            )}
+            <Product product={product}/> 
         </CustomLayout>
-
     );
+}
+
+export async function getServerSideProps(context) {
+    try {
+        const productResponse = await axios.get('http://localhost:3000//api/products?id='+context.query.id);
+        const product = productResponse.data;
+        return {
+            props:{
+                product: JSON.parse(JSON.stringify(product)),
+            } 
+        };
+    } catch (error) {
+        console.error('Error fetching data:', error);
+
+        // You can also handle errors and return an error page
+        return {
+            props: {
+                products: '',
+                error: 'Failed to fetch data',
+            },
+        };
+    };
 }

@@ -1,8 +1,6 @@
 import Center from "./Center";
 import Title from "@/components/customer/Title";
 import WhiteBox from "@/components/customer/WhiteBox";
-import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import ProductImages from "./ProductsImages";
@@ -87,61 +85,43 @@ const SelectorButton = styled.div`
     font-weight: 600;
 `;
 
-export default function Product({
-    _id,
-    title:existingTitle,
-    description:existingDescription,
-    price:existingPrice,
-    quantity:existingQuantity,
-    images:existingImages,
-    category:assignedCategory,
-    properties:assignedProperties
-}) {
-    const [title, setTitle] = useState(existingTitle || '');
-    const [description, setDescription] = useState(existingDescription || '');
-    const [price, setPrice] = useState(existingPrice || '');
-    const [quantity, setQuantity] = useState(existingQuantity || '');
-    const [category, setCategory] = useState(assignedCategory || '');
-    const [productProperties, setProductProperties] = useState(assignedProperties || {});
-    const [images, setImages] = useState(existingImages || []);
-    const seller = Cookies.get('username');
+export default function Product({product}) {
     const {addProduct} = useContext(CartContext);
     const [activeSelector, setActiveSelector] = useState('Des');
-    console.log()
     
     
-    
+
     return (
         <Center>
             <ColWrapper>
                 <WhiteBox>
-                    <ProductImages images = {images}/>
+                    <ProductImages images = {product.images}/>
                 </WhiteBox>
                 <div>
-                    <Title>{title}</Title>
-                    <p>{description}</p>
+                    <Title>{product.title}</Title>
+                    <p>{product.description}</p>
                 </div>
             </ColWrapper>
             <WhiteBox2>
                 <ColWrapper2>
                     <div>
-                        <p><Att2>Seller: </Att2> <Att>{seller}</Att> </p>
+                        <p><Att2>Seller: </Att2> <Att>{product.seller}</Att> </p>
                         <>No other seller available for this product</>
                     </div>
                     <div>
                         <PriceRow>
                             <div>
-                                <Price>{price} €</Price>
+                                <Price>{product.price} €</Price>
                             </div>
                             <div>
                                 <Button 
-                                    primary
-                                    onClick={() => addProduct(_id)}>
+                                    primary={1}
+                                    onClick={() => addProduct(product._id)}>
                                     <CartIcon/>Add to cart
                                 </Button>
                             </div>
                         </PriceRow>
-                        <p>Less than <Att>{quantity}</Att> available!</p>
+                        <p>Less than <Att>{product.quantity}</Att> available!</p>
                     </div>
                 </ColWrapper2>
             </WhiteBox2>
@@ -160,18 +140,18 @@ export default function Product({
                 <WhiteBox2>
                     {activeSelector === 'Des' && (
                         <div>
-                            {description}
+                            {product.description}
                         </div>
                     )}
                     {activeSelector === 'Sel' && (
                         <div>
-                            {seller}
+                            {product.seller}
                         </div>
                     )}
                     {activeSelector === 'Fea' && (
                         <div>
                             <ul>
-                                {Object.entries(productProperties).map(([property, value]) => (
+                                {Object.entries(product.properties).map(([property, value]) => (
                                     <li key={property}>
                                         {property}: {value}
                                     </li>

@@ -1,11 +1,7 @@
 import styled from "styled-components";
 import Center from "./Center";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import ProductBox from "./ProductBox";
 import Title from "./Title";
-
-
 
 const ProductsGrid = styled.div`
     display: grid;
@@ -17,17 +13,7 @@ const ProductsGrid = styled.div`
     }
 `;
 
-export default function Products() {
-    const [products, setProducts] = useState([]);
-    useEffect(() => {
-        axios.get('/api/products').then(
-            response => {
-                setProducts(response.data);
-                //console.log(products);
-            }
-        )
-    },[])
-
+export default function Products({ products }) {
     return(
         <Center>
             <Title>
