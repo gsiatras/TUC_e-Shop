@@ -1,8 +1,10 @@
 import styled from "styled-components"
-import Button from "./Button";
+import Button, { ButtonStyle } from "./Button";
 import Link from "next/link";
 import { useContext } from "react";
 import { CartContext } from "./CartContext";
+import FlyingButton from 'react-flying-item';
+import { primary } from "@/lib/colors";
 
 
 const ProductWrapper = styled.div`\
@@ -61,6 +63,18 @@ const Price = styled.div`
     }
 `;
 
+const ButtonWrapper = styled.div`
+    button{
+        ${ButtonStyle}
+        background-color: transparent;
+        color:${primary};
+        border: 1px solid ${primary};
+    }
+`;
+
+
+
+
 export default function ProductBox({_id,title, description,price,images}) {
     const uri = '/customer/product/'+_id;
 
@@ -78,13 +92,21 @@ export default function ProductBox({_id,title, description,price,images}) {
             <Title href={uri}>{title}</Title>
                 <PriceRow>
                     <Price>{price}€</Price>
-                    <Button
-                        block 
-                        primary={1} 
-                        outline={1} 
-                        onClick={() => addProduct(_id)}>
-                        Add to cart 
-                    </Button>
+                    <ButtonWrapper onClick={() => addProduct(_id)}>
+                        <FlyingButton 
+                            src={images[0]} 
+                            flyingItemStyling={{
+                                width: 'auto',
+                                height: 'auto',
+                                maxWidth: '60px',
+                                maxHeight: '60px',
+                                borderRadius: '0',
+                            }}
+                            targetTop={'5%'} 
+                            targetLeft={'65%'}>                    
+                                Add to cart 
+                        </FlyingButton>
+                    </ButtonWrapper>
                 </PriceRow>
             </ProductInfoBox>
         </ProductWrapper>

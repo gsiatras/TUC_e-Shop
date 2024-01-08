@@ -8,6 +8,7 @@ import { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import axios from "axios";
 import BarsIcaon from "./icons/Bars";
+import SearchIcon from "./icons/Search";
 import { useSearchParams } from "next/navigation";
 
 
@@ -26,6 +27,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 20px 0;
+    align-items: center;
 `;
 
 const StyledNav = styled.nav`
@@ -58,6 +60,9 @@ const NavLink = styled(Link)`
     @media screen and (min-width: 768px) {
         padding: 0;
     }
+    svg {
+        height: 20px;
+    }
 `;
 
 const NavButton = styled.button`
@@ -78,6 +83,21 @@ const NavButton2 = styled.button`
     @media screen and (min-width: 768px){
        display: none;
     }
+`;
+
+const SideIcons = styled.div`
+    display: flex;
+    a{
+        display: inline-block;
+        min-width: 20px;
+        color: white;
+        align-items: center;
+        svg{
+            width: 16px;
+            heigth: 16px;
+        }
+    }
+
 `;
 
 export default function Header() {
@@ -117,9 +137,14 @@ export default function Header() {
                             <NavLink href={'/customer/cart'}>Cart ({cartProducts?.length || 0})</NavLink>
                             <NavButton onClick={() => signOut()}>Logout</NavButton>
                         </StyledNav>
-                        <NavButton2 onClick={() => setMobileNavActive(prev => !prev)}>
-                                <BarsIcaon/>
-                        </NavButton2>
+                        <SideIcons>
+                            <Link href={'/customer/search'}>
+                                <SearchIcon/>
+                            </Link>
+                            <NavButton2 onClick={() => setMobileNavActive(prev => !prev)}>
+                                    <BarsIcaon/>
+                            </NavButton2>
+                        </SideIcons>
                     </Wrapper>
                 </Center>
             </StyledHeader>

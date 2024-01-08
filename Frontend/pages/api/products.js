@@ -50,8 +50,17 @@ export default async function handle(req, res) {
                     dynamicQuery[`properties.${key}`] = filters[key];
                 });
                 res.json(await Product.find({category:categoryIds, ...dynamicQuery}));
-                
             }
+        } else if (req.query?.search) {
+            const phrase = req.query.search;
+            const productsQuery = { '$or': [
+                { title: { $regex: phrase, $options: 'i' } }, 
+                { description: { $regex: phrase, $options: 'i' } }, 
+            ] };
+
+            res.json(await Product.find(productsQuery));
+
+
         } else {
             console.log('yes1');
             res.json(await Product.find());

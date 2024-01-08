@@ -41,7 +41,7 @@ const ShowAllSquare = styled(Link)`
 `;
 
 const BigWrapper = styled.div`
-    margin-bottom: 200px;
+    margin-bottom: 320px;
 `;
 
 export default function Categories({ categoriesProducts, mainCategories, allCategories }) {

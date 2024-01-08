@@ -106,7 +106,6 @@ export default function Product({product}) {
                 <ColWrapper2>
                     <div>
                         <p><Att2>Seller: </Att2> <Att>{product.seller}</Att> </p>
-                        <>No other seller available for this product</>
                     </div>
                     <div>
                         <PriceRow>
@@ -129,9 +128,6 @@ export default function Product({product}) {
                 <SelectorButton active={activeSelector==='Des'} onClick={() => setActiveSelector('Des')}>
                     Description
                 </SelectorButton>
-                <SelectorButton active={activeSelector==='Sel'} onClick={() => setActiveSelector('Sel')}>
-                    Sellers
-                </SelectorButton>
                 <SelectorButton active={activeSelector==='Fea'} onClick={() => setActiveSelector('Fea')}>
                     Features
                 </SelectorButton>
@@ -141,11 +137,6 @@ export default function Product({product}) {
                     {activeSelector === 'Des' && (
                         <div>
                             {product.description}
-                        </div>
-                    )}
-                    {activeSelector === 'Sel' && (
-                        <div>
-                            {product.seller}
                         </div>
                     )}
                     {activeSelector === 'Fea' && (
