@@ -1,2 +1,5 @@
 /node_modules
 /Frontend/node_modules
+/Frontend/.env
+/order-service/node_modules
+/product-service/node_modules
