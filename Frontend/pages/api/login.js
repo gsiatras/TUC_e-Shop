@@ -7,6 +7,7 @@ export default async function handler(req, res) {
     }
 
     if (req.query?.login) {
+        
         const {username, password} = req.body;
         try {
             var myHeaders = new Headers();
@@ -26,7 +27,8 @@ export default async function handler(req, res) {
               redirect: 'follow'
             };
             
-            const response = await fetch("http://172.17.0.1:8080/auth/realms/eshop/protocol/openid-connect/token", requestOptions)
+            const response = await fetch("http://localhost:8080/auth/realms/eshop/protocol/openid-connect/token", requestOptions)
+
             if (response.ok) {
                 const login_response = await response.json()
                 const token = login_response.access_token;
@@ -82,7 +84,7 @@ export default async function handler(req, res) {
                 redirect: 'follow'
             };
 
-            const first_response = await fetch("http://172.17.0.1:8080/auth/realms/master/protocol/openid-connect/token", requestOptions)
+            const first_response = await fetch("http://localhost:8080/auth/realms/master/protocol/openid-connect/token", requestOptions)
             if (first_response.ok) {
                 const adminAccessToken = await first_response.json();
                 //console.log(adminAccessToken)
@@ -119,7 +121,7 @@ export default async function handler(req, res) {
                     redirect: 'follow'
                 };
                 
-                const register_user = await fetch("http://172.17.0.1:8080/auth/admin/realms/eshop/users", requestOptions)
+                const register_user = await fetch("http://localhost:8080/auth/admin/realms/eshop/users", requestOptions)
                 if (register_user.ok) {
                     res.json(ok);
 
@@ -141,7 +143,7 @@ export default async function handler(req, res) {
                 //console.log(req.cookies);
                 const refreshToken = req.cookies.refresh_token;
                 //console.log(refreshToken);
-                const logoutUrl = `http://172.17.0.1:8080/auth/realms/eshop/protocol/openid-connect/logout`;
+                const logoutUrl = `http://localhost:8080/auth/realms/eshop/protocol/openid-connect/logout`;
                 var urlencoded = new URLSearchParams();
                 urlencoded.append("client_id", "client");
                 urlencoded.append("client_secret", "3I5qTlVtM7oS4q8802rwJaKlRsiqD6Qp");

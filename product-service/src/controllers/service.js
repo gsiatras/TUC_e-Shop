@@ -1,6 +1,7 @@
 import express from 'express';
 import { mongooseConnect } from '../lib/mongoose.js';
 import { Product } from '../models/Product.js';
+import "../lib/kafka.js";
 
 const app = express();
 const PORT = 3005; // You can use any port you prefer

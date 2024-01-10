@@ -2,10 +2,12 @@ import express from 'express';
 import { mongooseConnect } from '../lib/mongoose.js';
 import { Order } from '../models/Order.js';
 import axios from 'axios';
+import stripePackage from 'stripe';
+import kafka from '../lib/kafka.js';
+import '../lib/kafka.js';
 
 const app = express();
 const PORT = 3007; // You can use any port you prefer
-import stripePackage from 'stripe';
 const stripe = stripePackage(process.env.STRIPE_SECRET_KEY || "sk_test_51OU5hwJvUVrQpHMkIU7tDBk3WAxZjVw0bNMhuMPy9w1a6iB5V9MR6Cr1zUYLvTILHSmMh9P73ZPf20SpLexSlOtO00npckONT4");
 
 
@@ -63,9 +65,12 @@ app.post('/orders', async (req, res) => {
     let orderIds = [];
     for (const seller of sellers) {
         let seller_line_items = [];
+        let seller_products = [];
         for (const productId of uniqueIds) {
             const productInfo = productsInfos.find(p => p._id.toString() === productId && p.seller === seller.sellerName);
             const quantity = productIds.filter(id => id === productId)?.length || 0;
+            let product = {id:productInfo._id, quantity:quantity};
+            seller_products.push(product);
             if (quantity > 0 && productInfo) {
                 seller_line_items.push({
                     quantity, 
@@ -82,9 +87,20 @@ app.post('/orders', async (req, res) => {
             streetAddress,country,paid:false,status:'Pending',
         });
         console.log('order created');
+
+        const msg = {
+            id: orderDoc._id,
+            products: seller_products,
+        }
+
+        await kafka.kafkaProducer(msg);
+        
+        
+
         if (orderDoc) {
             orderIds.push(orderDoc._id.toString());
         }
+        
     }
     
 
