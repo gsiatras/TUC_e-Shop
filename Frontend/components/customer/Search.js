@@ -43,10 +43,13 @@ export default function Search() {
 
 
     function searchProducts(phrase) {
-        axios.get('/api/products?search='+encodeURIComponent(phrase)).then(res => {
+        const url = `http://localhost:3005/products?search=${encodeURIComponent(phrase)}`;
+    
+        axios.get(url).then(res => {
             setProducts(res.data);
             setIsLoading(false);
-    })}
+        });
+    }
     
 
    

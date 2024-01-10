@@ -17,7 +17,8 @@ const ColumnsWrapper = styled.div`
     grid-template-columns: 1fr;
     gap: 40px;
     margin-top: 40px;
-    margin-bottom: 710px;
+    margin-bottom: 550px;
+    0px;
     @media screen and (min-width: 768px) {
         grid-template-columns: 1.3fr .7fr;
     }
@@ -86,12 +87,17 @@ export default function Cart() {
 
     useEffect(() => {
         if (cartProducts?.length > 0) {
-            axios.get('/api/products', {params:{cartProducts:true, ids:cartProducts}}).then(
-                response => {
-                    setProducts(response.data);
-                    //console.log('products', cartProducts);
+            axios.get('http://localhost:3005/products', {
+                params: {
+                    cartProducts: true,
+                    ids: cartProducts
                 }
-            )
+            }).then(response => {
+                console.log(cartProducts);
+                console.log('adasd',response.data);
+                setProducts(response.data);
+                // console.log('products', cartProducts);
+            });
         } else {
             setProducts([]);
         }
@@ -141,12 +147,18 @@ export default function Cart() {
     
 
     async function goToPayment() {
-        const res = await axios.post('/api/orders', {
-            name,email,city,postalCode,streetAddress,country,
+        const res = await axios.post('http://localhost:3007/orders', {
+            name,
+            email,
+            city,
+            postalCode,
+            streetAddress,
+            country,
             cartProducts,
-            sellers:uniqueSellers,
-        })
-        if (res.data.url){
+            sellers: uniqueSellers,
+        });
+
+        if (res.data.url) {
             window.location = res.data.url;
         }
     }

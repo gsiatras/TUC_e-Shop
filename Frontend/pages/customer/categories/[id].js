@@ -19,7 +19,8 @@ export async function getServerSideProps(context) {
         const categories = categoriesResponse.data;
         const subCategories = getAllSubcategories(categories, category._id);
         const categoriesIds = [category._id, ...subCategories];
-        const productsResponse = await axios.get('http://localhost:3000/api/products?categories='+categoriesIds);
+        const productApiUrl = 'http://localhost:3005/products';
+        const productsResponse = await axios.get(`${productApiUrl}?categories=${categoriesIds}`);
         const products = productsResponse.data;
         
 

@@ -30,7 +30,7 @@ export async function getServerSideProps() {
         //console.log('childcats', childCatIds);
         const categoriesIds = [mainCatId, ...childCatIds];
         //console.log('beforereq', categoriesIds);
-        const productsResponse = await axios.get('http://localhost:3000/api/products?limitCategories='+categoriesIds);
+        const productsResponse = await axios.get('http://localhost:3005/products?limitCategories=' + categoriesIds);
         const products = productsResponse.data;
         categoriesProducts[mainCat._id] = products;
     }

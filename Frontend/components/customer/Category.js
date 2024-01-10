@@ -101,13 +101,13 @@ export default function Category({category, subCategories, products:originalProd
             }
             }
         );
-        const url = `/api/products?` + params.toString();
+        const url = `http://localhost:3005/products?${params.toString()}`;
         axios.get(url).then(res => {
             setProducts(res.data);
             setTimeout(() => {
                 setLoadingProducts(false);
             }, 1000);
-        })
+        });
     },[filterValues, sort, filtersChanged]);
     
     

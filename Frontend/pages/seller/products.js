@@ -7,11 +7,15 @@ import Cookies from "js-cookie";
 export default function Products() {
     const [products, setProducts] = useState([]);
     const seller = Cookies.get('username');
+    
+    const productApiUrl = 'http://localhost:3005/products';
+    
 
     useEffect(() => {
-        axios.get('/api/products?seller='+seller).then(response => {
-            setProducts(response.data);
-        })
+        axios.get(`${productApiUrl}?seller=${seller}`)
+            .then(response => {
+                setProducts(response.data);
+            });
     }, []);
     return <Layout>
         <h1 className="header1">Products</h1>

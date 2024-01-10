@@ -9,22 +9,23 @@ export default function DeleteProductPage(){
     const [productInfo,setProductInfo] = useState();
     
     useEffect(() => {
-        if (!id){
-            return;
+        if (!id) {
+        return;
         } else {
-            axios.get('/api/products?id='+id).then(response => {
-                setProductInfo(response.data);
+        axios.get('http://localhost:3005/products?id=' + id)
+            .then(response => {
+            setProductInfo(response.data);
             });
         }
-    });
-
-    function goBack(){
-        router.push('/seller/products');   
+    }, [id]);
+    
+    function goBack() {
+        router.push('/seller/products');
     }
-
-    async function deleteProduct(){
-        await axios.delete('/api/products?id='+id);
-        goBack();  
+    
+    async function deleteProduct() {
+        await axios.delete('http://localhost:3005/products?id=' + id);
+        goBack();
     }
 
     return (

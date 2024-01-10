@@ -14,11 +14,10 @@ export default function OrdersPage() {
 
     
     useEffect(() => {
-        //console.log({orders});
-        axios.get('/api/orders?seller='+seller).then(response => {
+        axios.get('http://localhost:3007/orders?seller=' + seller).then(response => {
             setOrders(response.data);
-        })
-    }, []);
+        });
+    }, [seller]);
 
     
 
@@ -48,13 +47,14 @@ export default function OrdersPage() {
             const newStatus = selectedStatuses[orderId];
             //console.log(newStatus);
             // Make an axios request to update the order on the server
-            axios.put('/api/orders?orderId='+orderId, {status:newStatus})
+            axios.put('http://localhost:3007/orders?orderId=' + orderId, { status: newStatus })
                 .then(response => {
-                    //console.log(`Order ${orderId} updated successfully`);
+                    // console.log(`Order ${orderId} updated successfully`);
                 })
                 .catch(error => {
                     console.error(`Error updating order ${orderId}:`, error);
                 });
+
         });
     }
     

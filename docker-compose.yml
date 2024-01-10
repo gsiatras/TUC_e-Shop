@@ -5,18 +5,29 @@ volumes:
     driver: local
   mongodb_data:
     driver: local
+  mongodb_order_data:
+    driver: local
   minio_data:
     driver: local
+
+networks:
+  default:
+      driver: bridge
 
 services:
   frontend:
     build:
       context: ./frontend
     ports:
-      - "3006:3006"
+      - "3001:3000"
     environment:
       - MINIO_SERVER_ACCESS_KEY=IVMwKxXfI2snrUfQAS2d
       - MINIO_SERVER_SECRET_KEY=4zjPH7wpMeTzrqC3XE7goU592ZislS9SaGjaBQRB
+    depends_on:
+      - keycloak
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    
 
   postgres:
     image: postgres
@@ -26,6 +37,7 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
+    
 
   keycloak:
     image: quay.io/keycloak/keycloak:legacy
@@ -42,6 +54,9 @@ services:
       - 8080:8080
     depends_on:
       - postgres
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    
 
   productsdb:
     image: mongo
@@ -58,7 +73,8 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: password
     ports:
-      - "8081:8081"
+      - "8082:8081"
+    
   
   minio:
     image: 'bitnami/minio:latest'
@@ -70,13 +86,64 @@ services:
       - MINIO_ROOT_PASSWORD=password
     volumes:
       - minio_data:/bitnami/minio/data
+    
 
   stripe-listen:
     image: stripe/stripe-cli:latest
     command: listen --forward-to=http://frontend:3000/api/stripe-webhook
     environment:
       STRIPE_SECRET: sk_test_51OU5hwJvUVrQpHMkIU7tDBk3WAxZjVw0bNMhuMPy9w1a6iB5V9MR6Cr1zUYLvTILHSmMh9P73ZPf20SpLexSlOtO00npckONT4
+   
+
+  product-service:
+    build:
+      context: ./product-service
+    ports:
+      - "3005:3005"
+    depends_on:
+      - productsdb
+    environment:
+      - MONGODB_URI=mongodb://productsdb:27017/test
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    
+
+  ordersdb:
+    image: mongo
+    volumes:
+      - mongodb_order_data:/data/db
+    command: --port 27020
+    ports:
+      - "27020:27020"
+   
+
+  order-service:  # Add the new order service
+    build:
+      context: ./order-service
+    ports:
+      - "3007:3007"  # Choose a port that doesn't conflict with other services
+    depends_on:
+      - ordersdb  # Assuming ordersdb is the name of your MongoDB service
+      - product-service
+    environment:
+      - MONGODB_URI=mongodb://ordersdb:27020/orders  # Update with your MongoDB connection string for orders
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
     
     
+
+  mongodb-compass-orders:
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: ordersdb
+      ME_CONFIG_MONGODB_PORT: 27020
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+    ports:
+      - "8081:8081"
+    
+
+
+
 
 

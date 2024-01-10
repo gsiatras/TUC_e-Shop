@@ -11,7 +11,7 @@ const ColumnsWrapper = styled.div`
     grid-template-columns: 1fr;
     gap: 40px;
     margin-top: 40px;
-    margin-bottom: 450px;
+    margin-bottom: 700px;
     
 `; 
 
@@ -23,11 +23,12 @@ export default function Orders() {
     
 
     useEffect(() => {
-        axios.get('/api/orders?email='+email).then(response => {
+        axios.get('http://localhost:3007/orders?email=' + email).then(response => {
             setOrders(response.data);
-        })
-        console.log({orders});
-    }, []);
+        });
+        console.log({ orders });
+    }, [email]);
+    
 
 
     return (
