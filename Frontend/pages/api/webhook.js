@@ -32,7 +32,8 @@ export default async function handler(req,res) {
     
         for (const id of orderIdArray) {
             if (id && paid) {
-                await Order.findByIdAndUpdate(id, { paid: true });
+                //await Order.findByIdAndUpdate(id, { paid: true });
+                console.log('paid');
             }
         }
     }

@@ -3,3 +3,5 @@
 /Frontend/.env
 /order-service/node_modules
 /product-service/node_modules
+/Frontend/.env
+.env
