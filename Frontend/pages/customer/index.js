@@ -19,11 +19,11 @@ export default function CustomerHome({featuredProduct, recentProducts}) {
 
 export async function getServerSideProps() {
     try {
-        const featuredProductId = '658d6f31044f7031934f1de8';
-        const featuredProductResponse = await axios.get('http://localhost:3005/products?id=' + featuredProductId);
+        const featuredProductId = '659fcbea75d16d7f8e8c3fd8';
+        const featuredProductResponse = await axios.get('http://172.17.0.1:3005/products?id=' + featuredProductId);
         const featuredProduct = featuredProductResponse.data;
         
-        const recentProductsResponse = await axios.get('http://localhost:3005/products?recent=true');
+        const recentProductsResponse = await axios.get('http://172.17.0.1:3005/products?recent=true');
         const recentProducts = recentProductsResponse.data;
         
   

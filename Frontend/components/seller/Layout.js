@@ -1,6 +1,6 @@
-import Nav from '@/components/seller/Nav'
 import { useState } from 'react'
 import Logo from '../Logo';
+import Nav from './nav';
 
 export default function Layout({children}) {
   const [showNav, setShowNav] = useState(false);

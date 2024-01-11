@@ -14,7 +14,7 @@ export default function ProductsPage({ products}) {
 export async function getServerSideProps() {
   try {
     // Fetch data from the API
-    const productsResponse = await axios.get('http://localhost:3005/products');
+    const productsResponse = await axios.get('http://172.17.0.1:3005/products');
 
     
 

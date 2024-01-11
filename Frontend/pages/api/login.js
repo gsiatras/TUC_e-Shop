@@ -27,7 +27,7 @@ export default async function handler(req, res) {
               redirect: 'follow'
             };
             
-            const response = await fetch("http://localhost:8080/auth/realms/eshop/protocol/openid-connect/token", requestOptions)
+            const response = await fetch("http://172.17.0.1:8080/auth/realms/eshop/protocol/openid-connect/token", requestOptions)
 
             if (response.ok) {
                 const login_response = await response.json()
@@ -75,7 +75,7 @@ export default async function handler(req, res) {
             var urlencoded = new URLSearchParams();
             urlencoded.append("grant_type", "client_credentials");
             urlencoded.append("client_id", "admin-cli");
-            urlencoded.append("client_secret", "rMNg8HPiPw8u81sL3geqswRl4G4S2aXt");
+            urlencoded.append("client_secret", "LP6r0AqrCs4mI0juhUCQzLhfj8akFOdq");
 
             var requestOptions = {
                 method: 'POST',
@@ -84,11 +84,13 @@ export default async function handler(req, res) {
                 redirect: 'follow'
             };
 
-            const first_response = await fetch("http://localhost:8080/auth/realms/master/protocol/openid-connect/token", requestOptions)
+            const first_response = await fetch("http://172.17.0.1:8080/auth/realms/master/protocol/openid-connect/token", requestOptions)
+            //console.log(first_response);
             if (first_response.ok) {
                 const adminAccessToken = await first_response.json();
                 //console.log(adminAccessToken)
                 const token = adminAccessToken.access_token
+                //console.log(adminAccessToken);
 
                 // Register after getting the access token
                 var myHeaders = new Headers();
@@ -121,7 +123,8 @@ export default async function handler(req, res) {
                     redirect: 'follow'
                 };
                 
-                const register_user = await fetch("http://localhost:8080/auth/admin/realms/eshop/users", requestOptions)
+                const register_user = await fetch("http://172.17.0.1:8080/auth/admin/realms/eshop/users", requestOptions)
+                //console.log(register_user);
                 if (register_user.ok) {
                     res.json(ok);
 
@@ -143,7 +146,7 @@ export default async function handler(req, res) {
                 //console.log(req.cookies);
                 const refreshToken = req.cookies.refresh_token;
                 //console.log(refreshToken);
-                const logoutUrl = `http://localhost:8080/auth/realms/eshop/protocol/openid-connect/logout`;
+                const logoutUrl = `http://172.17.0.1:8080/auth/realms/eshop/protocol/openid-connect/logout`;
                 var urlencoded = new URLSearchParams();
                 urlencoded.append("client_id", "client");
                 urlencoded.append("client_secret", "3I5qTlVtM7oS4q8802rwJaKlRsiqD6Qp");

@@ -120,7 +120,13 @@ export default function Product({product}) {
                                 </Button>
                             </div>
                         </PriceRow>
-                        <p>Less than <Att>{product.quantity}</Att> available!</p>
+                        {product?.quantity > 0 && (
+                            <p>Less than <Att>{product.quantity}</Att> available!</p>
+                        )}
+                        {product?.quantity === 0 && (
+                            <p>Out of stock!</p>
+                        )}
+                        
                     </div>
                 </ColWrapper2>
             </WhiteBox2>

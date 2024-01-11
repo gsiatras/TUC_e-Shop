@@ -38,6 +38,8 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
     
 
   keycloak:
@@ -65,6 +67,8 @@ services:
       - mongodb_data:/data/db
     ports:
       - "27017:27017"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
 
   mongodb-compass:
     image: mongo-express
@@ -75,6 +79,8 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: password
     ports:
       - "8082:8081"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
     
   
   minio:
@@ -86,14 +92,18 @@ services:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=password
     volumes:
-      - minio_data:/bitnami/minio/data
+      - minio_data:/bitname/minio/data
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
     
 
   stripe-listen:
     image: stripe/stripe-cli:latest
-    command: listen --forward-to=http://localhost:3000/api/webhook
+    command: listen --forward-to=http://172.17.0.1:3001/api/webhook
     environment:
       STRIPE_SECRET: sk_test_51OU5hwJvUVrQpHMkIU7tDBk3WAxZjVw0bNMhuMPy9w1a6iB5V9MR6Cr1zUYLvTILHSmMh9P73ZPf20SpLexSlOtO00npckONT4
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
    
 
   product-service:
@@ -116,6 +126,8 @@ services:
     command: --port 27020
     ports:
       - "27020:27020"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
    
 
   order-service:  # Add the new order service
@@ -141,15 +153,19 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: password
     ports:
       - "8081:8081"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   
 
   zookeeper:
-      image: confluentinc/cp-zookeeper:7.2.1
-      container_name: zookeeper
-      environment:
-        ZOOKEEPER_CLIENT_PORT: 2181
-      networks:
-      - default
+    image: confluentinc/cp-zookeeper:7.2.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+    - default
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
 
     
   kafka:
@@ -186,22 +202,24 @@ services:
 
 
   control-center:
-      image: confluentinc/cp-enterprise-control-center:latest
-      hostname: control-center
-      depends_on:
-        - kafka
-      ports:
-        - "9021:9021"
-      expose:
-        - 9021
-      environment:
-        CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:19092'
-        CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-        CONTROL_CENTER_REPLICATION_FACTOR: 1
-        PORT: 9021
-      networks:
-      - default
-      restart: always
+    image: confluentinc/cp-enterprise-control-center:latest
+    hostname: control-center
+    depends_on:
+      - kafka
+    ports:
+      - "9021:9021"
+    expose:
+      - 9021
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:19092'
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      PORT: 9021
+    networks:
+    - default
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   
 
 

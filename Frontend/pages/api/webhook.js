@@ -1,5 +1,5 @@
 import { mongooseConnect } from "@/lib/mongoose";
-import { Order } from "@/models/Order";
+import axios from "axios";
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 import { buffer } from "micro";
 
@@ -21,19 +21,23 @@ export default async function handler(req,res) {
   // Handle the event
   switch (event.type) {
     case 'checkout.session.completed':
-      //console.log('asdasd');
+      console.log('webhook');
       const data = event.data.object;
       const orderIds = data.metadata.orderIds;
-      //console.log(orderIds);
+      console.log(orderIds);
       const paid = data.payment_status === 'paid';
       
       if (orderIds) {
+        console.log(orderIds);
         const orderIdArray = orderIds.split(',');
-    
+        console.log(orderIdArray);
         for (const id of orderIdArray) {
+            console.log(id);
+            console.log(paid);
             if (id && paid) {
                 //await Order.findByIdAndUpdate(id, { paid: true });
-                console.log('paid');
+                res = await axios.put('http://172.17.0.1:3007/orders?paidId=' + id);
+                console.log(res);
             }
         }
     }
@@ -41,7 +45,7 @@ export default async function handler(req,res) {
     default:
     
   }
-  res.status(200).send('ok');
+  
 }
 
 

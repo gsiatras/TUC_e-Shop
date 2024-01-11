@@ -6,7 +6,7 @@ import mime from 'mime-types';
 import * as Minio from 'minio'
 
 const bucket = 'tuc-eshop'
-const minioEndpoint = "localhost";
+const minioEndpoint = "172.17.0.1";
 
 
 export default async function handle(req,res) {
@@ -15,13 +15,12 @@ export default async function handle(req,res) {
         endPoint: minioEndpoint,
         port: 9000,
         useSSL: false,
-        accessKey: process.env.MINIO_SERVER_ACCESS_KEY_MAC,
-        secretKey: process.env.MINIO_SERVER_SECRET_KEY_MAC,
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY,
     });
-
+    
     
     const exists = await client.bucketExists(bucket)
-
     if (exists) {
     //console.log('Bucket ' + bucket + ' exists.')
     } else {

@@ -14,6 +14,9 @@ async function handleProducts(order) {
       if (!product || product.quantity < requiredQuantity) {
         // Product not found or quantity is insufficient
         return false;
+      } else {
+        let newQuantity = product.quantity - requiredQuantity;
+        await Product.findByIdAndUpdate(productId, { quantity: newQuantity });
       }
     }
 

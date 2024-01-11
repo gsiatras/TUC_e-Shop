@@ -61,14 +61,15 @@ export default function ProductForm({
             properties:productProperties
         };
         //console.log(data);
+        
         const productApiUrl = 'http://localhost:3005/products';
 
         if (_id) {
             // Update
-            await axios.put(`${productApiUrl}?id=${_id}`, { ...data, _id });
+            await axios.put(`${productApiUrl}?id=${_id}`, { ...data, _id }, { withCredentials: true });
         } else {
             // Create
-            await axios.post(productApiUrl, data);
+            await axios.post(productApiUrl, data, { withCredentials: true });
         }
 
         setGoToProducts(true);

@@ -1,7 +1,7 @@
 import Category from "@/components/customer/Category";
 import CustomLayout from "@/components/customer/CustomLayout";
 import axios from "axios";
-import { json } from "micro";
+
 
 export default function CategoryPage({category, products, subCategories}) {
     return (
@@ -13,13 +13,13 @@ export default function CategoryPage({category, products, subCategories}) {
 
 export async function getServerSideProps(context) {
     try {
-        const categoryResponse = await axios.get('http://localhost:3000//api/categories?id='+context.query.id);
+        const categoryResponse = await axios.get('http://172.17.0.1:3001/api/categories?id='+context.query.id);
         const category = categoryResponse.data;
-        const categoriesResponse = await axios.get('http://localhost:3000//api/categories');
+        const categoriesResponse = await axios.get('http://172.17.0.1:3001/api/categories');
         const categories = categoriesResponse.data;
         const subCategories = getAllSubcategories(categories, category._id);
         const categoriesIds = [category._id, ...subCategories];
-        const productApiUrl = 'http://localhost:3005/products';
+        const productApiUrl = 'http://172.17.0.1:3005/products';
         const productsResponse = await axios.get(`${productApiUrl}?categories=${categoriesIds}`);
         const products = productsResponse.data;
         

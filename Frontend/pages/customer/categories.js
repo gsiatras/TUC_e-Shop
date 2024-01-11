@@ -15,7 +15,7 @@ export default function ProductsPage({ categoriesProducts, mainCategories, allCa
 export async function getServerSideProps() {
   try {
     // Fetch data from the API
-    const categoriesResponse = await axios.get('http://localhost:3000//api/categories');
+    const categoriesResponse = await axios.get('http://172.17.0.1:3001//api/categories');
 
     // Extract data from the responses
     const categories = categoriesResponse.data;
@@ -30,7 +30,7 @@ export async function getServerSideProps() {
         //console.log('childcats', childCatIds);
         const categoriesIds = [mainCatId, ...childCatIds];
         //console.log('beforereq', categoriesIds);
-        const productsResponse = await axios.get('http://localhost:3005/products?limitCategories=' + categoriesIds);
+        const productsResponse = await axios.get('http://172.17.0.1:3005/products?limitCategories=' + categoriesIds);
         const products = productsResponse.data;
         categoriesProducts[mainCat._id] = products;
     }

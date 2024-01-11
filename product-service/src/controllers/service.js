@@ -2,12 +2,16 @@ import express from 'express';
 import { mongooseConnect } from '../lib/mongoose.js';
 import { Product } from '../models/Product.js';
 import "../lib/kafka.js";
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import { decodeJwt } from '../utils/jwtUtils.js';
 
 const app = express();
 const PORT = 3005; // You can use any port you prefer
 
 // Middleware to parse JSON in request bodies
 app.use(express.json());
+app.use(cookieParser());
 
 // Middleware to handle CORS if needed
 app.use((req, res, next) => {
@@ -16,6 +20,11 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
+
+app.use(cors({
+    origin: 'http://localhost:3001',  // Update with the origin of your frontend app
+    credentials: true,
+  }));
 
 // Your route handling
 app.get('/products', async (req, res) => {
@@ -82,7 +91,16 @@ app.get('/products', async (req, res) => {
 
 app.post('/products', async (req, res) => {
     const {title,description,price,quantity,seller,images,category,properties} = req.body;
-    console.log(properties);
+    const token = req.cookies.access_token;
+    const decodeToken =  await decodeJwt(token);
+    const roles = decodeToken.realm_access.roles;
+    const rl = roles.includes("Customer") ? "Customer" :
+                roles.includes("Seller") ? "Seller" : null;
+    if (rl !== 'Seller') {
+        console.log('Not authenticated access');
+        res.json('Not authinticated Access');
+        
+    }
     //console.log(req.body);
     const productDoc = await Product.create({
         title,description,price,quantity,seller,images,category: category || undefined, properties,
@@ -92,7 +110,15 @@ app.post('/products', async (req, res) => {
 
 app.put('/products', async (req, res) => {
     const {title,description,price,quantity,seller,images,category,properties,_id} = req.body; 
-    console.log(properties);
+    const token = req.cookies.access_token;
+    const decodeToken =  await decodeJwt(token);
+    const roles = decodeToken.realm_access.roles;
+    const rl = roles.includes("Customer") ? "Customer" :
+                roles.includes("Seller") ? "Seller" : null;
+    if (rl !== 'Seller') {
+        console.log('Not authenticated access') 
+        res.json('Not authinticated Access');
+    }
     await Product.updateOne({_id}, {title,description,price,quantity,seller,images,
         category: category || undefined, properties});
     //console.log("sucess");

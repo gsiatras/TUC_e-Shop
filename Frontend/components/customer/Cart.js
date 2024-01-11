@@ -93,8 +93,8 @@ export default function Cart() {
                     ids: cartProducts
                 }
             }).then(response => {
-                console.log(cartProducts);
-                console.log('adasd',response.data);
+                //console.log(cartProducts);
+                //console.log('adasd',response.data);
                 setProducts(response.data);
                 // console.log('products', cartProducts);
             });
@@ -156,7 +156,7 @@ export default function Cart() {
             country,
             cartProducts,
             sellers: uniqueSellers,
-        });
+        }, { withCredentials: true });
 
         if (res.data.url) {
             window.location = res.data.url;
