@@ -4,10 +4,9 @@ const base64Decode = (base64) => {
   };
   
   export const decodeJwt = (jwtToken) => {
-    const [, base64Url] = jwtToken.split('.');
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  
     try {
+      const [, base64Url] = jwtToken.split('.');
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = base64Decode(base64);
       return JSON.parse(jsonPayload);
     } catch (error) {
