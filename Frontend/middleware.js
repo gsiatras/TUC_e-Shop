@@ -6,17 +6,17 @@ export async function middleware(req) {
     let rl = null;
     let accessToken = null; // Declare outside the if block
 
-    if (req.cookies) {
-      accessToken = req.cookies?.get('access_token')?.value;
-      console.log(accessToken);
+    // if (req.cookies) {
+    //   accessToken = req.cookies?.get('access_token')?.value;
+    //   console.log(accessToken);
 
-      if (accessToken) {
-        console.log(accessToken);
-        const decodedToken = await decodeJwt(accessToken);
-        const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
-        rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
-      }
-    }
+    //   if (accessToken) {
+    //     console.log(accessToken);
+    //     const decodedToken = await decodeJwt(accessToken);
+    //     const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
+    //     rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
+    //   }
+    // }
 
     const url = req.url;
     const absoluteHomeUrl = new URL('/', req.nextUrl);
