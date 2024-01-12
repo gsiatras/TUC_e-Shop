@@ -8,10 +8,10 @@ export async function middleware(req) {
 
     if (req.cookies) {
       accessToken = req.cookies?.get('access_token')?.value;
-      console.log(accessToken);
+      //console.log(accessToken);
 
       if (accessToken) {
-        console.log(accessToken);
+        //console.log(accessToken);
         const decodedToken = await decodeJwt(accessToken);
         const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
         rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;

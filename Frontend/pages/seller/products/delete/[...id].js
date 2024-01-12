@@ -12,7 +12,7 @@ export default function DeleteProductPage(){
         if (!id) {
         return;
         } else {
-        axios.get('http://localhost:3005/products?id=' + id)
+        axios.get('http://34.116.170.68:3005/products?id=' + id)
             .then(response => {
             setProductInfo(response.data);
             });
@@ -24,7 +24,7 @@ export default function DeleteProductPage(){
     }
     
     async function deleteProduct() {
-        await axios.delete('http://localhost:3005/products?id=' + id);
+        await axios.delete('http://34.116.170.68:3005/products?id=' + id);
         goBack();
     }
 

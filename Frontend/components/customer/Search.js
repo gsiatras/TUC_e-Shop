@@ -43,7 +43,7 @@ export default function Search() {
 
 
     function searchProducts(phrase) {
-        const url = `http://localhost:3005/products?search=${encodeURIComponent(phrase)}`;
+        const url = `http://34.116.170.68:3005/products?search=${encodeURIComponent(phrase)}`;
     
         axios.get(url).then(res => {
             setProducts(res.data);

@@ -23,7 +23,7 @@ export default function Orders() {
     
 
     useEffect(() => {
-        axios.get('http://localhost:3007/orders?email=' + email).then(response => {
+        axios.get('http://34.116.170.68:3007/orders?email=' + email).then(response => {
             setOrders(response.data);
         });
         console.log({ orders });

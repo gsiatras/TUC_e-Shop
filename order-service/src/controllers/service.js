@@ -13,7 +13,7 @@ import { decodeJwt } from '../utils/jwtUtils.js';
 const app = express();
 const PORT = 3007; // You can use any port you prefer
 const stripe = stripePackage(process.env.STRIPE_SECRET_KEY || "sk_test_51OU5hwJvUVrQpHMkIU7tDBk3WAxZjVw0bNMhuMPy9w1a6iB5V9MR6Cr1zUYLvTILHSmMh9P73ZPf20SpLexSlOtO00npckONT4");
-const allowedOrigins = ['http://localhost:3001', 'http://172.17.0.1:3001', 'http:localhost:3001'];
+const allowedOrigins = ['http://localhost:3001', 'http://172.17.0.1:3001', 'http:34.116.170.68:3001'];
 
 app.use(cors({
     origin: allowedOrigins,  // Update with the origin of your frontend app
@@ -127,12 +127,12 @@ app.post('/orders', async (req, res) => {
         line_items,
         mode: 'payment',
         customer_email: email,
-        success_url: 'http://localhost:3001/customer/cart?success=1',
-        cancel_url: 'http://localhost:3001/customer/cart?canceled=1',
+        success_url: 'http://34.116.170.68:3001/customer/cart?success=1',
+        cancel_url: 'http://34.116.170.68:3001/customer/cart?canceled=1',
         metadata: {orderIds: orderIds.join(','),},
     })
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
     res.json({
         url:session.url,
     })

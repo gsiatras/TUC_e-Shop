@@ -8,7 +8,7 @@ export default function Products() {
     const [products, setProducts] = useState([]);
     const seller = Cookies.get('username');
     
-    const productApiUrl = 'http://localhost:3005/products';
+    const productApiUrl = 'http://34.116.170.68:3005/products';
     
 
     useEffect(() => {
