@@ -3,18 +3,18 @@ import { decodeJwt } from './utils/jwtUtils';
 
 export async function middleware(req) {
   try {
-    let accessToken = null;
-    let rl = null;
+    // let accessToken = null;
+    // let rl = null;
 
-    if (req.cookies) {
-      accessToken = req.cookies?.get('access_token')?.value;
+    // if (req.cookies) {
+    //   accessToken = req.cookies?.get('access_token')?.value;
 
-      if (accessToken) {
-        const decodedToken = await decodeJwt(accessToken);
-        const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
-        rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
-      }
-    }
+    //   if (accessToken) {
+    //     const decodedToken = await decodeJwt(accessToken);
+    //     const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
+    //     rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
+    //   }
+    // }
 
     let url = '/';
     if (req.url) {
