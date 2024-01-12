@@ -12,9 +12,15 @@ export async function middleware(req) {
       rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
     }
 
-    const url = req.url;
+    if (req.url) {
+      console.log('exists');
+      const url = req.url;
+    } else {
+      const url ='/';
+    }
+    
     console.log('Request URL:', url); // Add this line for debugging
-    const absoluteHomeUrl = new URL('/', req.nextUrl || 'http://default-home-url');
+    const absoluteHomeUrl = req.nextUrl ? new URL('/', req.nextUrl) : new URL('/');
     console.log('Absolute Home URL:', absoluteHomeUrl); // Add this line for debugging
 
     if ((!accessToken && url.includes('/seller')) || (accessToken && rl !== 'Seller' && url.includes('/seller'))) {
