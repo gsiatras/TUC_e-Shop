@@ -4,13 +4,13 @@ import { decodeJwt } from './utils/jwtUtils';
 export async function middleware(req) {
   try {
     let rl = null;
+    let accessToken = null; // Declare outside the if block
 
     if (req.cookies) {
-      
-      let accessToken = req.cookies?.get('access_token')?.value;
+      accessToken = req.cookies?.get('access_token')?.value;
       console.log(accessToken);
 
-      if (accessToken !== undefined) {
+      if (accessToken) {
         console.log(accessToken);
         const decodedToken = await decodeJwt(accessToken);
         const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
@@ -18,9 +18,9 @@ export async function middleware(req) {
       }
     }
 
-    
     const url = req.url;
     const absoluteHomeUrl = new URL('/', req.nextUrl);
+
     if ((!accessToken && url.includes('/seller')) || (accessToken && rl !== 'Seller' && url.includes('/seller'))) {
       //console.log("Redirecting to home URL due to seller conditions"); // Add this line for debugging
       return NextResponse.redirect(absoluteHomeUrl);
