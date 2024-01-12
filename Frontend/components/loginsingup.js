@@ -92,7 +92,7 @@ export default function LoginSignup() {
   const Login = async (data) => {
     const { username, password } = data;
     const res = await axios.post('/api/login?login='+true, data);
-    console.log(res);
+    //console.log(res);
     const ndata = res.data;
     setCookie(ndata);
 

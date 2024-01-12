@@ -46,11 +46,6 @@ export default async function handler(req, res) {
                 
                 // Use this function after receiving the access token from the server
                 
-                res.setHeader('Set-Cookie', [
-                    `access_token=${token}; HttpOnly; Secure; SameSite=None; Path=/`,
-                    `refresh_token=${refresh_token}; HttpOnly; Secure; SameSite=None; Path=/`
-                  ]);
-                
                 res.json(data);
 
                 } else {
@@ -163,8 +158,8 @@ export default async function handler(req, res) {
 
                 // Assuming 'res' is the response object
                 res.setHeader('Set-Cookie', [
-                    'access_token=; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
-                    'refresh_token=; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+                    'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+                    'refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
                 ]);
   
     

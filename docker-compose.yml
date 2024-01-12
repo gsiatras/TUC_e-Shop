@@ -15,9 +15,9 @@ networks:
       driver: bridge
 
 services:
-  Frontend:
+  frontend:
     build:
-      context: ./frontend
+      context: ./Frontend
     ports:
       - "3001:3000"
     environment:

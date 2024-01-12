@@ -14,7 +14,7 @@ export default function OrdersPage() {
 
     
     useEffect(() => {
-        axios.get('http://34.118.15.144:3007/orders?seller=' + seller).then(response => {
+        axios.get('http://localhost:3007/orders?seller=' + seller).then(response => {
             setOrders(response.data);
         });
     }, [seller]);

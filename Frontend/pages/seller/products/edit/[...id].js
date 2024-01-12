@@ -15,7 +15,7 @@ export default  function EditProductPage() {
             return;
         }
     
-        axios.get('http://34.118.15.144:3005/products?id=' + id)
+        axios.get('http://localhost:3005/products?id=' + id)
         .then(response => {
             setProductInfo(response.data);
         });
