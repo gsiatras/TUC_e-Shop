@@ -15,7 +15,7 @@ networks:
       driver: bridge
 
 services:
-  frontend:
+  Frontend:
     build:
       context: ./frontend
     ports:
