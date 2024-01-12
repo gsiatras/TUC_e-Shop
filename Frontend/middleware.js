@@ -3,14 +3,14 @@ import { decodeJwt } from './utils/jwtUtils';
 
 export async function middleware(req) {
   try {
-    const accessToken = req.cookies?.get('access_token')?.value;
-    let rl = null;
+    // const accessToken = req.cookies?.get('access_token')?.value;
+    // let rl = null;
 
-    if (accessToken) {
-      const decodedToken = await decodeJwt(accessToken);
-      const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
-      rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
-    }
+    // if (accessToken) {
+    //   const decodedToken = await decodeJwt(accessToken);
+    //   const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
+    //   rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
+    // }
 
     if (req.url) {
       console.log('exists');
