@@ -10,7 +10,7 @@ export async function middleware(req) {
       let accessToken = req.cookies?.get('access_token')?.value;
       console.log(accessToken);
 
-      if (accessToken) {
+      if (accessToken !== undefined) {
         console.log(accessToken);
         const decodedToken = await decodeJwt(accessToken);
         const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
