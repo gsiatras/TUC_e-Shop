@@ -101,7 +101,7 @@ export default function Category({category, subCategories, products:originalProd
             }
             }
         );
-        const url = `http://localhost:3005/products?${params.toString()}`;
+        const url = `http://34.118.15.144:3005/products?${params.toString()}`;
         axios.get(url).then(res => {
             setProducts(res.data);
             setTimeout(() => {

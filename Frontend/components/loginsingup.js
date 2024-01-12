@@ -22,13 +22,14 @@ export default function LoginSignup() {
   
   const setCookie = (data) => {
     // Destructure data
-    const {uname, mail, rl} = data;
+    const {uname, mail, rl, token} = data;
   
     // Set cookies
     //console.log('setting cookie to ' + rl);
     Cookies.set('username', uname, { expires: 7 });
     Cookies.set('email', mail, { expires: 7 });
     Cookies.set('role', rl, { expires: 7 });
+    Cookies.set('access_token', token, { expires: 7 });
   };
 
   const handleSignUpClick = () => {

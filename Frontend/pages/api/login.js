@@ -42,7 +42,7 @@ export default async function handler(req, res) {
                 const roles = decodeToken.realm_access.roles;
                 const rl = roles.includes("Customer") ? "Customer" :
                 roles.includes("Seller") ? "Seller" : null;
-                const data = {uname, mail, rl};
+                const data = {uname, mail, rl, token};
                 
                 // Use this function after receiving the access token from the server
                 
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
                     `access_token=${token}; HttpOnly; Secure; SameSite=None; Path=/`,
                     `refresh_token=${refresh_token}; HttpOnly; Secure; SameSite=None; Path=/`
                   ]);
-                  
+                
                 res.json(data);
 
                 } else {

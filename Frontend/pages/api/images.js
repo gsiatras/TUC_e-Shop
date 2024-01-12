@@ -55,7 +55,7 @@ export default async function handle(req,res) {
                 filep, metaData);
 
             
-            const link = `http://localhost:9000/${bucket}/${newFilename}`;;
+            const link = `http://34.118.15.144/:9000/${bucket}/${newFilename}`;
             links.push(link);
         }
         return res.json({links});
