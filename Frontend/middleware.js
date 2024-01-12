@@ -3,12 +3,11 @@ import { decodeJwt } from './utils/jwtUtils';
 
 export async function middleware(req) {
   try {
-    let accessToken = null;
     let rl = null;
 
     if (req.cookies) {
       
-      accessToken = req.cookies?.get('access_token')?.value;
+      let accessToken = req.cookies?.get('access_token')?.value;
       console.log(accessToken);
 
       if (accessToken) {
@@ -21,7 +20,6 @@ export async function middleware(req) {
 
     
     const url = req.url;
-  
     const absoluteHomeUrl = new URL('/', req.nextUrl);
     if ((!accessToken && url.includes('/seller')) || (accessToken && rl !== 'Seller' && url.includes('/seller'))) {
       //console.log("Redirecting to home URL due to seller conditions"); // Add this line for debugging
