@@ -3,22 +3,25 @@ import { decodeJwt } from './utils/jwtUtils';
 
 export async function middleware(req) {
   try {
-    // const accessToken = req.cookies?.get('access_token')?.value;
-    // let rl = null;
+    let accessToken = null;
+    let rl = null;
 
-    // if (accessToken) {
-    //   const decodedToken = await decodeJwt(accessToken);
-    //   const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
-    //   rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
-    // }
+    if (req.cookies) {
+      accessToken = req.cookies?.get('access_token')?.value;
 
-    if (req.url) {
-      console.log('exists');
-      const url = req.url;
-    } else {
-      const url ='/';
+      if (accessToken) {
+        const decodedToken = await decodeJwt(accessToken);
+        const { preferred_username: uname, email, realm_access: { roles } } = decodedToken;
+        rl = roles.includes("Customer") ? "Customer" : roles.includes("Seller") ? "Seller" : null;
+      }
     }
-    
+
+    let url = '/';
+    if (req.url) {
+      console.log('Request URL exists');
+      url = req.url;
+    }
+
     console.log('Request URL:', url); // Add this line for debugging
     const absoluteHomeUrl = req.nextUrl ? new URL('/', req.nextUrl) : new URL('/');
     console.log('Absolute Home URL:', absoluteHomeUrl); // Add this line for debugging
