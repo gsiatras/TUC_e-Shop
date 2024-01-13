@@ -30,6 +30,8 @@ app.use(cors({
     credentials: true,
 }));
 
+app.options('/orders', cors());
+
 
 // Middleware to parse JSON in request bodies
 
@@ -48,7 +50,7 @@ app.get('/orders', async (req, res) => {
     
 });
 
-app.options('/orders', cors());
+=
 app.post('/orders', async (req, res) => {
     const token = req.cookies.access_token;
     const decodeToken =  await decodeJwt(token);
