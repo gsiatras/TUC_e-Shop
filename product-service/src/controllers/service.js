@@ -37,7 +37,7 @@ app.get('/products', async (req, res) => {
         res.json(await Product.find({}, null, {sort: {'_id':-1}, limit:12}));
     } else if (req.query?.cartProducts) {
         const ids = req.query.ids;
-        //console.log(ids);
+        console.log(ids);
         //console.log(req.query);
         res.json(await Product.find({_id:ids}));
     } else if (req.query?.limitCategories) {
