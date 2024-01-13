@@ -36,10 +36,13 @@ app.use((req, res, next) => {
 // Your route handling
 app.get('/orders', async (req, res) => {
     if (req.query?.seller) {
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
         res.json(await Order.find({seller:req.query.seller}).sort({createdAt:-1}));
     } else if (req.query?.email) {
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
         res.json(await Order.find({email:req.query.email}).sort({createdAt:-1}));
     }
+    
 });
 
 app.post('/orders', async (req, res) => {
@@ -142,9 +145,11 @@ app.put('/orders', async (req, res) => {
     if (req.query?.orderId) {
         const id  = req.query.orderId;
         const status = req.body.status;
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
         res.json(await Order.findByIdAndUpdate(id, { status: status }));
     } else if (req.query?.paidId) {
         const id  = req.query.paidId;
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
         res.json(await Order.findByIdAndUpdate(id, { paid: true }));
     }  else {
         console('error');
