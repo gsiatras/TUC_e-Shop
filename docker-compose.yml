@@ -75,8 +75,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_SERVER: productsdb
       ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: password
+      ME_CONFIG_BASICAUTH_USERNAME: adm1n
+      ME_CONFIG_BASICAUTH_PASSWORD: pa55word
     ports:
       - "8082:8081"
     extra_hosts:
@@ -89,8 +89,8 @@ services:
       - '9000:9000'
       - '9001:9001'
     environment:
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=password
+      - MINIO_ROOT_USER=adm1n
+      - MINIO_ROOT_PASSWORD=pa55word
     volumes:
       - minio_data:/bitname/minio/data
     extra_hosts:
@@ -149,8 +149,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_SERVER: ordersdb
       ME_CONFIG_MONGODB_PORT: 27020
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: password
+      ME_CONFIG_BASICAUTH_USERNAME: adm1n
+      ME_CONFIG_BASICAUTH_PASSWORD: pa55word
     ports:
       - "8081:8081"
     extra_hosts:
