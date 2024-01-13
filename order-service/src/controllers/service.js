@@ -148,6 +148,7 @@ app.post('/orders', async (req, res) => {
 });
 
 app.put('/orders', async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     if (req.query?.orderId) {
         const id  = req.query.orderId;
         const status = req.body.status;
