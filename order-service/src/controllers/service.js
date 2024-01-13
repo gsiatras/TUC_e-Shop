@@ -13,7 +13,7 @@ import { decodeJwt } from '../utils/jwtUtils.js';
 const app = express();
 const PORT = 3007; // You can use any port you prefer
 const stripe = stripePackage(process.env.STRIPE_SECRET_KEY || "sk_test_51OU5hwJvUVrQpHMkIU7tDBk3WAxZjVw0bNMhuMPy9w1a6iB5V9MR6Cr1zUYLvTILHSmMh9P73ZPf20SpLexSlOtO00npckONT4");
-const allowedOrigins = ['http://localhost:3001', 'http://172.17.0.1:3001', 'http://34.116.170.68:3001'];
+const allowedOrigins = ['http://localhost:3001/', 'http://172.17.0.1:3001/', 'http://34.116.170.68:3001/'];
 
 app.use(cors({
     origin: allowedOrigins,  // Update with the origin of your frontend app
@@ -36,10 +36,10 @@ app.use((req, res, next) => {
 // Your route handling
 app.get('/orders', async (req, res) => {
     if (req.query?.seller) {
-        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001/');
         res.json(await Order.find({seller:req.query.seller}).sort({createdAt:-1}));
     } else if (req.query?.email) {
-        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001/');
         res.json(await Order.find({email:req.query.email}).sort({createdAt:-1}));
     }
     
@@ -135,7 +135,7 @@ app.post('/orders', async (req, res) => {
         metadata: {orderIds: orderIds.join(','),},
     })
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
+    res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001/');
     res.json({
         url:session.url,
     })
@@ -145,11 +145,11 @@ app.put('/orders', async (req, res) => {
     if (req.query?.orderId) {
         const id  = req.query.orderId;
         const status = req.body.status;
-        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001/');
         res.json(await Order.findByIdAndUpdate(id, { status: status }));
     } else if (req.query?.paidId) {
         const id  = req.query.paidId;
-        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001');
+        res.setHeader('Access-Control-Allow-Origin', 'http://34.116.170.68:3001/');
         res.json(await Order.findByIdAndUpdate(id, { paid: true }));
     }  else {
         console('error');
