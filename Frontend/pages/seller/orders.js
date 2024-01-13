@@ -47,7 +47,13 @@ export default function OrdersPage() {
             const newStatus = selectedStatuses[orderId];
             //console.log(newStatus);
             // Make an axios request to update the order on the server
-            axios.put('http://34.116.170.68:3007/orders?orderId=' + orderId, { status: newStatus },)
+            axios.put('http://34.116.170.68:3007/orders?orderId=' + orderId, { status: newStatus }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://34.116.170.68:3001',
+                    // Add other headers as needed
+                  },
+            })
                 .then(response => {
                     // console.log(`Order ${orderId} updated successfully`);
                 })
