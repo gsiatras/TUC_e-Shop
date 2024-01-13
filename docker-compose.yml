@@ -76,6 +76,7 @@ services:
   mongodb-compass:
     image: mongo-express
     environment:
+      ME_CONFIG_MONGODB_URL: mongodb://adm1n:Pa55w0rd@172.17.0.1:27017/test
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_ADMINUSERNAME: adm1n
@@ -155,6 +156,7 @@ services:
   mongodb-compass-orders:
     image: mongo-express
     environment:
+      ME_CONFIG_MONGODB_URL: mongodb://adm1n:Pa55w0rd@172.17.0.1:27017/test
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27020
       ME_CONFIG_MONGODB_ADMINUSERNAME: adm1n
