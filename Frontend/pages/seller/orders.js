@@ -50,7 +50,7 @@ export default function OrdersPage() {
             axios.put('http://34.116.170.68:3007/orders?orderId=' + orderId, { status: newStatus }, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://34.116.170.68:3001',
+                    'Access-Control-Allow-Origin': '*',
                     // Add other headers as needed
                   },
             })
