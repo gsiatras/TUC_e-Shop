@@ -13,7 +13,8 @@ import { decodeJwt } from '../utils/jwtUtils.js';
 const app = express();
 const PORT = 3007; // You can use any port you prefer
 const stripe = stripePackage(process.env.STRIPE_SECRET_KEY || "sk_test_51OU5hwJvUVrQpHMkIU7tDBk3WAxZjVw0bNMhuMPy9w1a6iB5V9MR6Cr1zUYLvTILHSmMh9P73ZPf20SpLexSlOtO00npckONT4");
-const allowedOrigins = ['http://localhost:3001/', 'http://172.17.0.1:3001/', 'http://34.116.170.68:3001/'];
+const allowedOrigins = ['http://localhost:3001', 'http://172.17.0.1:3001', 'http://34.116.170.68:3001'];
+
 
 app.use(cors({
     origin: allowedOrigins,  // Update with the origin of your frontend app
@@ -27,7 +28,7 @@ app.use(cookieParser());
 
 // Middleware to handle CORS if needed
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  //res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   next();
