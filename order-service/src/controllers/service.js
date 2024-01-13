@@ -34,7 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.options('*', cors());
+
 // Your route handling
 app.get('/orders', async (req, res) => {
     if (req.query?.seller) {
@@ -47,6 +47,7 @@ app.get('/orders', async (req, res) => {
     
 });
 
+app.options('/orders', cors());
 app.post('/orders', async (req, res) => {
     const token = req.cookies.access_token;
     const decodeToken =  await decodeJwt(token);
