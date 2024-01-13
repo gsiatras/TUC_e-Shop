@@ -34,7 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.options('/orders', cors());
+app.options('*', cors());
 // Your route handling
 app.get('/orders', async (req, res) => {
     if (req.query?.seller) {
