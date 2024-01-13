@@ -17,7 +17,7 @@ networks:
 services:
   frontend:
     build:
-      context: ./Frontend
+      context: ./frontend
     ports:
       - "3001:3000"
     environment:
@@ -67,22 +67,16 @@ services:
       - mongodb_data:/data/db
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: adm1n
-      MONGO_INITDB_ROOT_PASSWORD: Pa55w0rd
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
 
   mongodb-compass:
     image: mongo-express
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://adm1n:Pa55w0rd@172.17.0.1:27017/test
-      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_SERVER: productsdb
       ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_MONGODB_ADMINUSERNAME: adm1n
-      ME_CONFIG_MONGODB_ADMINPASSWORD: Pa55w0rd
       ME_CONFIG_BASICAUTH_USERNAME: adm1n
-      ME_CONFIG_BASICAUTH_PASSWORD: Pa55w0rd
+      ME_CONFIG_BASICAUTH_PASSWORD: Pa55word
     ports:
       - "8082:8081"
     extra_hosts:
@@ -96,7 +90,7 @@ services:
       - '9001:9001'
     environment:
       - MINIO_ROOT_USER=adm1n
-      - MINIO_ROOT_PASSWORD=pa55word
+      - MINIO_ROOT_PASSWORD=Pa55w0rd
     volumes:
       - minio_data:/bitname/minio/data
     extra_hosts:
@@ -130,9 +124,6 @@ services:
     volumes:
       - mongodb_order_data:/data/db
     command: --port 27020
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: adm1n
-      MONGO_INITDB_ROOT_PASSWORD: Pa55w0rd
     ports:
       - "27020:27020"
     extra_hosts:
@@ -156,11 +147,8 @@ services:
   mongodb-compass-orders:
     image: mongo-express
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://adm1n:Pa55w0rd@172.17.0.1:27017/test
-      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_SERVER: ordersdb
       ME_CONFIG_MONGODB_PORT: 27020
-      ME_CONFIG_MONGODB_ADMINUSERNAME: adm1n
-      ME_CONFIG_MONGODB_ADMINPASSWORD: Pa55w0rd
       ME_CONFIG_BASICAUTH_USERNAME: adm1n
       ME_CONFIG_BASICAUTH_PASSWORD: Pa55w0rd
     ports:
