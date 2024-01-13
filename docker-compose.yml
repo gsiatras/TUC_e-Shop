@@ -68,9 +68,8 @@ services:
     ports:
       - "27017:27017"
     environment:
-      - environment:
-      - MONGO_INITDB_ROOT_USERNAME: adm1n
-      - MONGO_INITDB_ROOT_PASSWORD: Pa55w0rd
+      MONGO_INITDB_ROOT_USERNAME: adm1n
+      MONGO_INITDB_ROOT_PASSWORD: Pa55w0rd
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
 
@@ -80,7 +79,9 @@ services:
       ME_CONFIG_MONGODB_SERVER: productsdb
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_BASICAUTH_USERNAME: adm1n
-      ME_CONFIG_BASICAUTH_PASSWORD: pa55word
+      ME_CONFIG_BASICAUTH_PASSWORD: Pa55w0rd
+      ME_CONFIG_MONGODB_ADMINUSERNAME: adm1n
+      ME_CONFIG_MONGODB_ADMINPASSWORD: Pas55w0rd
     ports:
       - "8082:8081"
     extra_hosts:
