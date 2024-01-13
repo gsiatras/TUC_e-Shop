@@ -67,6 +67,10 @@ services:
       - mongodb_data:/data/db
     ports:
       - "27017:27017"
+    environment:
+      - environment:
+      - MONGO_INITDB_ROOT_USERNAME: adm1n
+      - MONGO_INITDB_ROOT_PASSWORD: Pa55w0rd
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
 
@@ -124,6 +128,9 @@ services:
     volumes:
       - mongodb_order_data:/data/db
     command: --port 27020
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: adm1n
+      MONGO_INITDB_ROOT_PASSWORD: Pa55w0rd
     ports:
       - "27020:27020"
     extra_hosts:
