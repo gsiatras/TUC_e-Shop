@@ -14,7 +14,7 @@ export default function OrdersPage() {
 
     
     useEffect(() => {
-        axios.get('http://34.118.97.132:3007/orders?seller=' + seller).then(response => {
+        axios.get('http://34.118.68.24:3007/orders?seller=' + seller).then(response => {
             setOrders(response.data);
         });
     }, [seller]);
@@ -47,7 +47,7 @@ export default function OrdersPage() {
             const newStatus = selectedStatuses[orderId];
             //console.log(newStatus);
             // Make an axios request to update the order on the server
-            axios.put('http://34.118.97.132:3007/orders?orderId=' + orderId, { status: newStatus }, {
+            axios.put('http://34.118.68.24:3007/orders?orderId=' + orderId, { status: newStatus }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
