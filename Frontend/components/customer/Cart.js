@@ -87,7 +87,7 @@ export default function Cart() {
 
     useEffect(() => {
         if (cartProducts?.length > 0) {
-            axios.get('http://34.118.68.24:3005/products', {
+            axios.get('http://34.118.97.132:3005/products', {
                 params: {
                     cartProducts: true,
                     ids: cartProducts
@@ -147,7 +147,7 @@ export default function Cart() {
     
 
     async function goToPayment() {
-        const res = await axios.post('http://34.118.68.24:3007/orders', {
+        const res = await axios.post('http://34.118.97.132:3007/orders', {
             name,
             email,
             city,

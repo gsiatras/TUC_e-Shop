@@ -26,7 +26,7 @@ app.use(cookieParser());
 
   
 app.use(cors({
-    origin: 'http://34.118.68.24:3001',  // Update with the origin of your frontend app
+    origin: 'http://34.118.97.132:3001',  // Update with the origin of your frontend app
     credentials: true,
 }));
 
@@ -137,8 +137,8 @@ app.post('/orders', async (req, res) => {
         line_items,
         mode: 'payment',
         customer_email: email,
-        success_url: 'http://34.118.68.24:3001/customer/cart?success=1',
-        cancel_url: 'http://34.118.68.24:3001/customer/cart?canceled=1',
+        success_url: 'http://34.118.97.132:3001/customer/cart?success=1',
+        cancel_url: 'http://34.118.97.132:3001/customer/cart?canceled=1',
         metadata: {orderIds: orderIds.join(','),},
     })
 
