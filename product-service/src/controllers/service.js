@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-    origin: 'http://34.116.170.68:3001',  // Update with the origin of your frontend app
+    origin: 'http://34.118.97.132:3001',  // Update with the origin of your frontend app
     credentials: true,
   }));
 
