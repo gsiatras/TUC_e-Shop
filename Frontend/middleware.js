@@ -11,7 +11,8 @@ export async function middleware(req) {
       //console.log(accessToken);
     }
 
-    
+    const url = req.url;
+    const absoluteHomeUrl = new URL('/', req.nextUrl);
 
     if ((!rl && url.includes('/seller')) || (rl !== 'Seller' && url.includes('/seller'))) {
       //console.log("Redirecting to home URL due to seller conditions"); // Add this line for debugging
