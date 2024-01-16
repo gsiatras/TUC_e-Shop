@@ -15,8 +15,8 @@ export default async function handle(req,res) {
         endPoint: minioEndpoint,
         port: 9000,
         useSSL: false,
-        accessKey: "IVMwKxXfI2snrUfQAS2d",
-        secretKey: "4zjPH7wpMeTzrqC3XE7goU592ZislS9SaGjaBQRB",
+        accessKey: "jVmb3V594vIjdkQlndNW",
+        secretKey: "HNNvdLQjwTPuAgV2KEOMZpJTtyF3KCrwGcBkjhoE",
     });
     
     
